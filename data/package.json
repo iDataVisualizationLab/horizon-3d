@@ -1,0 +1,10 @@
+{
+  "name": "data-converter",
+  "version": "0.0.1",
+
+  "dependencies": {
+    "file-system": "^2.2.2",
+    "csv-parse": "^1.2.0",
+    "csv-write-stream": "^2.0.0"
+  }
+}
