@@ -1,34 +1,55 @@
 var fs = require('fs');
 var parse = require('csv-parse');
-var csvWriter = require('csv-write-stream')
+var jsonfile = require('jsonfile');
+
 
 // remove rows and cols in odd index, starting from 0
 var convertToJsonArray = function () {
 
-    var writer = csvWriter();
     var skipHeader = true;
 
-    writer.pipe(fs.createWriteStream('ogallala.saturated.thickness.csv'));
+    var rowIndex = 0;
 
-
-
+    var file = 'ogallala.json';
+    var dataJson = [];
 
     // fs.createReadStream('ascii_2013all.original.csv')
+    // .pipe(parse({delimiter: '\t'}))
     fs.createReadStream('ascii_2013all.optimized-2-2.csv')
-        .pipe(parse({delimiter: '\t'}))
+        .pipe(parse({delimiter: ','}))
         .on('data', function(csvrow) {
             if (skipHeader == true) {
                 skipHeader = false;
-
+                rowIndex ++;
                 return;
             }
 
-            console.log(csvrow);
+            var obj;
+
+            for(var i =0; i< csvrow.length; i++) {
+                obj = {
+                    lat: i,
+                    lon: rowIndex,
+                    sat: +csvrow[i]
+                };
+
+                dataJson.push(obj);
+
+
+            }
+
+            rowIndex++;
 
         })
         .on('end',function() {
-            writer.end();
+            jsonfile.writeFile(file, dataJson, function (err) {
 
+                if (err != null) {
+                    console.error(err)
+                }
+            });
+
+            console.log("done");
         });
 };
 
