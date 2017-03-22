@@ -16,14 +16,16 @@ var mouseX = 0, mouseY = 0;
 var windowWidth =  1200,
     windowHeight = 800;
 
-var realData;
+var realData2011;
+var realData2012;
+var realData2013;
 
 var startPosition;
 
 var max = {
-  lat: 100, // z label.z; graphDimensions.w
-  lon: 167, // x label.x; graphDimensions.d
-  sat: 2000 // y label.y; graphDimensions.h
+    lat: 100, // z label.z; graphDimensions.w
+    lon: 167, // x label.x; graphDimensions.d
+    sat: 2000 // y label.y; graphDimensions.h
 };
 
 // var max = {
@@ -40,17 +42,27 @@ var data = {
     }
 };
 
-d3.csv("data/ascii_2013all.optimized-2-2.optimized-2-2.converted.csv", function(error, data) {
-    realData = data;
-    init();
-    render();
+d3.csv("data/ascii_2011all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
+    realData2011 = data2011;
+
+    d3.csv("data/ascii_2012all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
+        realData2012 = data2012;
+
+        d3.csv("data/ascii_2013all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
+            realData2013 = data2013;
+
+            init();
+            render();
+        });
+    });
+
 });
 
 
 var graphDimensions = {
     w:1000,
     d:2405,
-    h:400
+    h:800
 };
 
 
@@ -304,7 +316,7 @@ function init() {
     vFOVRadians = 2 * Math.atan( windowHeight / ( 2 * 1500 ) ),
         //fov = vFOVRadians * 180 / Math.PI;
         fov = 40;
-    startPosition = new THREE.Vector3( 0, 0, 3000 );
+    startPosition = new THREE.Vector3( 0, 0, 6000 );
     camera = new THREE.PerspectiveCamera( fov, windowWidth / windowHeight, 1, 30000 );
     camera.position.set( startPosition.x, startPosition.y, startPosition.z );
 
@@ -355,17 +367,17 @@ function init() {
     });
 
     var floorGeometry = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
-    // var floorGeometry = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 597, 1136);
     var faceColors = [];
     var lines={};
     var point;
     // on plane Geometry, change the z value to create the 3D area surface
     // just like when creating a terrain
+    var myHeight;
 
     for (var i =0; i< floorGeometry.vertices.length; i++){
 
         //push colors to the faceColors array
-        point = realData[i];
+        point = realData2011[i];
         point.lat = +point.lat;
         point.lon = +point.lon;
         point.sat = +point.sat;
@@ -373,7 +385,9 @@ function init() {
         //push colors to the faceColors array
         faceColors.push(getColor(point.sat)); // one vertex on color, depending current data value
 
-        floorGeometry.vertices[i].z = point.sat < 0 ? "null" : point.sat;
+        myHeight = point.sat;
+
+        floorGeometry.vertices[i].z = myHeight < 0 ? "null" : myHeight;
     }
 
     console.log(max);
@@ -444,7 +458,7 @@ function init() {
 //----------------------------------------------------------------------------
 
 function animate() {
-   requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
     controls.update();
 }
 
