@@ -26,6 +26,12 @@ var max = {
   sat: 2000 // y label.y; graphDimensions.h
 };
 
+// var max = {
+//     lat: 100, // z label.z; graphDimensions.w
+//     lon: 167, // x label.x; graphDimensions.d
+//     sat: 2000 // y label.y; graphDimensions.h
+// };
+
 var data = {
     labels: {
         y: ["500", "1000", "1500", "2000"],
@@ -35,6 +41,7 @@ var data = {
 };
 
 d3.csv("data/ogallala.csv", function(error, data) {
+// d3.csv("data/ogallala.original.csv", function(error, data) {
     realData = data;
     init();
     render();
@@ -349,6 +356,7 @@ function init() {
     });
 
     var floorGeometry = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 98, 166);
+    // var floorGeometry = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 597, 1136);
     var faceColors = [];
     var lines={};
     var point;
@@ -426,6 +434,8 @@ function init() {
     // set up window resize listener
     window.addEventListener( 'resize', onWindowResize, false );
     animate();
+
+    console.log("done calling animate");
 }
 
 
@@ -435,7 +445,7 @@ function init() {
 //----------------------------------------------------------------------------
 
 function animate() {
-    requestAnimationFrame(animate);
+   requestAnimationFrame(animate);
     controls.update();
 }
 

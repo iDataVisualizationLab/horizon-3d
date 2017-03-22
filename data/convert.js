@@ -11,15 +11,15 @@ var convertToJsonArray = function () {
 
     var rowIndex = 0;
 
-    var file = 'ogallala.csv';
+    var file = 'ogallala.original.csv';
 
     var writer = csvWriter();
     writer.pipe(fs.createWriteStream(file));
 
-    // fs.createReadStream('ascii_2013all.original.csv')
-    // .pipe(parse({delimiter: '\t'}))
-    fs.createReadStream('ascii_2013all.optimized-2-2.csv')
-        .pipe(parse({delimiter: ','}))
+    fs.createReadStream('ascii_2013all.original.csv')
+    .pipe(parse({delimiter: ','}))
+    // fs.createReadStream('ascii_2013all.optimized-2-2.csv')
+    //     .pipe(parse({delimiter: ','}))
         .on('data', function(csvrow) {
             if (skipHeader == true) {
                 skipHeader = false;
