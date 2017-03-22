@@ -22,6 +22,8 @@ var realData2013;
 
 var startPosition;
 
+var controls;
+
 var max = {
     lat: 100, // z label.z; graphDimensions.w
     lon: 167, // x label.x; graphDimensions.d
@@ -36,7 +38,7 @@ var max = {
 
 var data = {
     labels: {
-        y: ["500", "1000", "1500", "2000"],
+        y: ["500", "1000", "1500", "2000", "2500", "3000"],
         x: ['', "20","40","60","80","100","120","140","160","180"],
         z: ["", "10","20","30","40","50","60","70","80","90"]
     }
@@ -62,7 +64,7 @@ d3.csv("data/ascii_2011all.optimized-2-2.optimized-2-2.converted.csv", function(
 var graphDimensions = {
     w:1000,
     d:2405,
-    h:800
+    h:1200
 };
 
 
@@ -305,6 +307,49 @@ var getColor = function (saturatedThickness) {
     return "#00003c";
 };
 
+function createGeometry(dataYear, scale, graphBase) {
+    if (!graphBase) {
+        graphBase = 0;
+    }
+
+    if (!scale) {
+        scale = 1;
+    }
+
+    var floorGeometry = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
+    var faceColors = [];
+    var point;
+    // on plane Geometry, change the z value to create the 3D area surface
+    // just like when creating a terrain
+    var myHeight;
+
+    for (var i =0; i< floorGeometry.vertices.length; i++){
+
+        //push colors to the faceColors array
+        point = dataYear[i];
+        point.lat = +point.lat;
+        point.lon = +point.lon;
+        point.sat = +point.sat;
+
+        //push colors to the faceColors array
+        faceColors.push(getColor(point.sat)); // one vertex on color, depending current data value
+
+        myHeight = scale*point.sat;
+
+        floorGeometry.vertices[i].z = graphBase + ( myHeight < 0 ? "null" : myHeight );
+    }
+
+    console.log(max);
+    //vertexColors
+    for (var x= 0; x <floorGeometry.faces.length; x++){
+        floorGeometry.faces[x].vertexColors[0] = new THREE.Color(faceColors[floorGeometry.faces[x].a]);
+        floorGeometry.faces[x].vertexColors[1] = new THREE.Color(faceColors[floorGeometry.faces[x].b]);
+        floorGeometry.faces[x].vertexColors[2] = new THREE.Color(faceColors[floorGeometry.faces[x].c]);
+    }
+
+    return floorGeometry;
+}
+
 function init() {
 
     container = document.getElementById( 'container' );
@@ -313,7 +358,7 @@ function init() {
 //----------------------------------------------------------------------------
 //   Set up camera
 //____________________________________________________________________________
-    vFOVRadians = 2 * Math.atan( windowHeight / ( 2 * 1500 ) ),
+    var vFOVRadians = 2 * Math.atan( windowHeight / ( 2 * 1500 ) ),
         //fov = vFOVRadians * 180 / Math.PI;
         fov = 40;
     startPosition = new THREE.Vector3( 0, 0, 6000 );
@@ -366,37 +411,29 @@ function init() {
         color: 0x000000
     });
 
-    var floorGeometry = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
-    var faceColors = [];
-    var lines={};
-    var point;
-    // on plane Geometry, change the z value to create the 3D area surface
-    // just like when creating a terrain
-    var myHeight;
+    var floorGeometry2011 = createGeometry(realData2011, 0.33, 0);
+    var floor2011 = new THREE.Mesh(floorGeometry2011, wireframeMaterial);
+    floor2011.rotation.x = -Math.PI/2;
+    floor2011.position.y = -graphDimensions.h/2;
+    floor2011.rotation.z = Math.PI/2;
 
-    for (var i =0; i< floorGeometry.vertices.length; i++){
+    var floorGeometry2012 = createGeometry(realData2012, 0.33, 400);
+    var floor2012 = new THREE.Mesh(floorGeometry2012, wireframeMaterial);
+    floor2012.rotation.x = -Math.PI/2;
+    floor2012.position.y = -graphDimensions.h/2;
+    floor2012.rotation.z = Math.PI/2;
 
-        //push colors to the faceColors array
-        point = realData2011[i];
-        point.lat = +point.lat;
-        point.lon = +point.lon;
-        point.sat = +point.sat;
+    var floorGeometry2013 = createGeometry(realData2013, 0.33, 800);
+    var floor2013 = new THREE.Mesh(floorGeometry2013, wireframeMaterial);
+    floor2013.rotation.x = -Math.PI/2;
+    floor2013.position.y = -graphDimensions.h/2;
+    floor2013.rotation.z = Math.PI/2;
 
-        //push colors to the faceColors array
-        faceColors.push(getColor(point.sat)); // one vertex on color, depending current data value
+    var group = new THREE.Object3D();
+    group.add(floor2011);
+    group.add(floor2012);
+    group.add(floor2013);
 
-        myHeight = point.sat;
-
-        floorGeometry.vertices[i].z = myHeight < 0 ? "null" : myHeight;
-    }
-
-    console.log(max);
-    //vertexColors
-    for (var x= 0; x <floorGeometry.faces.length; x++){
-        floorGeometry.faces[x].vertexColors[0] = new THREE.Color(faceColors[floorGeometry.faces[x].a]);
-        floorGeometry.faces[x].vertexColors[1] = new THREE.Color(faceColors[floorGeometry.faces[x].b]);
-        floorGeometry.faces[x].vertexColors[2] = new THREE.Color(faceColors[floorGeometry.faces[x].c]);
-    }
 
     // //grid lines
     // for (line in lines){
@@ -415,12 +452,12 @@ function init() {
     // }
 
 
-    var floor = new THREE.Mesh(floorGeometry, wireframeMaterial);
-    floor.rotation.x = -Math.PI/2;
-    floor.position.y = -graphDimensions.h/2;
 
-    floor.rotation.z = Math.PI/2;
-    glScene.add(floor);
+
+
+
+
+    glScene.add(group);
 
 //----------------------------------------------------------------------------
 //    SET UP RENDERERS
