@@ -241,50 +241,50 @@ var getColor = function (saturatedThickness) {
     }
 
     if (saturatedThickness < 80) {
-        return "#eef4f8";
+        return "#fbd1b0";
     }
 
     if (saturatedThickness < 140) {
-        return "#cce5f0";
+        return "#d9a78c";
     }
 
     if (saturatedThickness < 200) {
-        return "#aed5e7";
+        return "#b49b69";
     }
 
     if (saturatedThickness < 260) {
-        return "#94c5dc";
+        return "#6b936b";
     }
 
     if (saturatedThickness < 320) {
-        return "#6aa2c2";
+        return "#00759e";
     }
 
     if (saturatedThickness < 380) {
-        return "#6aa2c2";
+        return "#006493";
     }
 
     if (saturatedThickness < 440) {
-        return "#5892b4";
+        return "#005388";
     }
 
     if (saturatedThickness < 500) {
-        return "#4781a6";
+        return "#00437c";
     }
 
     if (saturatedThickness < 560) {
-        return "#3a7195";
+        return "#00326e";
     }
 
     if (saturatedThickness < 620) {
-        return "#326082";
+        return "#00215d";
     }
 
     if (saturatedThickness < 680) {
-        return "#2c506c";
+        return "#00114d";
     }
 
-    return "#243d52";
+    return "#00003c";
 };
 
 function init() {
@@ -379,7 +379,7 @@ function init() {
         //push colors to the faceColors array
         faceColors.push(getColor(point.sat)); // one vertex on color, depending current data value
 
-        floorGeometry.vertices[i].z = point.sat < 20 ? "null" : point.sat;
+        floorGeometry.vertices[i].z = point.sat < 0 ? "null" : point.sat;
     }
 
     console.log(max);
