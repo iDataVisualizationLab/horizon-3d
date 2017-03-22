@@ -11,12 +11,13 @@ var convertToJsonArray = function () {
 
     var rowIndex = 0;
 
-    var file = 'ogallala.original.csv';
+    var inputFile = 'ascii_2013all.optimized-2-2.optimized-2-2';
+    var outputFile = inputFile + '.converted.csv';
 
     var writer = csvWriter();
-    writer.pipe(fs.createWriteStream(file));
+    writer.pipe(fs.createWriteStream(outputFile));
 
-    fs.createReadStream('ascii_2013all.original.csv')
+    fs.createReadStream(inputFile + '.csv')
     .pipe(parse({delimiter: ','}))
     // fs.createReadStream('ascii_2013all.optimized-2-2.csv')
     //     .pipe(parse({delimiter: ','}))

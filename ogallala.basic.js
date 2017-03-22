@@ -13,17 +13,17 @@ var light;
 
 var mouseX = 0, mouseY = 0;
 
-var windowWidth =  window.innerWidth,
-    windowHeight = window.innerHeight;
+var windowWidth =  1200,
+    windowHeight = 800;
 
 var realData;
 
 var startPosition;
 
 var max = {
-  lat: 100, // z label.z; graphDimensions.w
-  lon: 167, // x label.x; graphDimensions.d
-  sat: 2000 // y label.y; graphDimensions.h
+    lat: 100, // z label.z; graphDimensions.w
+    lon: 167, // x label.x; graphDimensions.d
+    sat: 2000 // y label.y; graphDimensions.h
 };
 
 // var max = {
@@ -40,8 +40,7 @@ var data = {
     }
 };
 
-d3.csv("data/ogallala.csv", function(error, data) {
-// d3.csv("data/ogallala.original.csv", function(error, data) {
+d3.csv("data/ascii_2013all.optimized-2-2.optimized-2-2.converted.csv", function(error, data) {
     realData = data;
     init();
     render();
@@ -51,7 +50,7 @@ d3.csv("data/ogallala.csv", function(error, data) {
 var graphDimensions = {
     w:1000,
     d:2405,
-    h:800
+    h:400
 };
 
 
@@ -355,7 +354,7 @@ function init() {
         color: 0x000000
     });
 
-    var floorGeometry = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 98, 166);
+    var floorGeometry = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
     // var floorGeometry = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 597, 1136);
     var faceColors = [];
     var lines={};
@@ -445,7 +444,7 @@ function init() {
 //----------------------------------------------------------------------------
 
 function animate() {
-   requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
     controls.update();
 }
 
