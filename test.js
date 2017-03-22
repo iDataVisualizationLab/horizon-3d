@@ -32,11 +32,6 @@ d3.csv("data/ogallala.csv", function(error, data) {
     render();
 });
 
-// $.getJSON( "./js/2005-2015.json", function( data ) {
-//     realData = data;
-//     init();
-//     render();
-// });
 
 var graphDimensions = {
     w:1000,
@@ -346,7 +341,6 @@ function init() {
     });
 
     var floorGeometry = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 98, 166);
-    var colors = ["#eef4f8","#ddecf4","#cce5f0","#bcddec","#aed5e7","#a0cde2","#94c5dc","#89bcd6","#7eb4d0","#74abc9","#6aa2c2","#619abb","#5892b4","#4f8aad","#4781a6","#3f799f","#3a7195","#35688c","#326082","#2f5877","#2c506c","#243d52"];
     var faceColors = [];
     var lines={};
     var point;
@@ -356,9 +350,6 @@ function init() {
 
         //push colors to the faceColors array
         point = realData[i];
-        if (point == undefined) {
-            debugger;
-        }
         point.lat = +point.lat;
         point.lon = +point.lon;
         point.sat = +point.sat;
@@ -375,21 +366,21 @@ function init() {
         floorGeometry.faces[x].vertexColors[2] = new THREE.Color(faceColors[floorGeometry.faces[x].c]);
     }
 
-    //grid lines
-    for (line in lines){
-        if (line == "-500"){
-            var graphLine= new THREE.Line(lines[line], blacklineMat);
-        }else{
-            var graphLine = new THREE.Line(lines[line], lineMat);
-        }
-
-        graphLine.rotation.x = -Math.PI/2;
-        graphLine.position.y = -graphDimensions.h/2;
-
-        graphLine.rotation.z = Math.PI/2;
-
-        glScene.add(graphLine);
-    }
+    // //grid lines
+    // for (line in lines){
+    //     if (line == "-500"){
+    //         var graphLine= new THREE.Line(lines[line], blacklineMat);
+    //     }else{
+    //         var graphLine = new THREE.Line(lines[line], lineMat);
+    //     }
+    //
+    //     graphLine.rotation.x = -Math.PI/2;
+    //     graphLine.position.y = -graphDimensions.h/2;
+    //
+    //     graphLine.rotation.z = Math.PI/2;
+    //
+    //     glScene.add(graphLine);
+    // }
 
 
     var floor = new THREE.Mesh(floorGeometry, wireframeMaterial);
