@@ -13,8 +13,8 @@ var light;
 
 var mouseX = 0, mouseY = 0;
 
-var windowWidth = 1200,
-    windowHeight = 800;
+var windowWidth =  window.innerWidth,
+    windowHeight = window.innerHeight;
 
 var realData;
 
@@ -180,7 +180,7 @@ function gridInit(){
         width: height,
         linesHeight: b,
         linesWidth: a,
-        color: 0xcccccc
+        color: "#CCCCCC"
     });
     //newGridXY.position.y = height;
     newGridXY.position.z = -depth;
@@ -192,7 +192,7 @@ function gridInit(){
         width: depth,
         linesHeight: b,
         linesWidth: c,
-        color: 0xcccccc
+        color: "#CCCCCC"
     });
     newGridYZ.rotation.x = Math.PI/2;
     newGridYZ.position.y = -height;
@@ -204,7 +204,7 @@ function gridInit(){
         width: height,
         linesHeight:c,
         linesWidth: a,
-        color: 0xcccccc
+        color: "#CCCCCC"
     });
 
     newGridXZ.position.x = width;
@@ -355,7 +355,6 @@ function init() {
     // on plane Geometry, change the z value to create the 3D area surface
     // just like when creating a terrain
 
-    var max = {lat: 0, lon: 0, sat: 0};
     for (var i =0; i< floorGeometry.vertices.length; i++){
 
         //push colors to the faceColors array
@@ -363,18 +362,6 @@ function init() {
         point.lat = +point.lat;
         point.lon = +point.lon;
         point.sat = +point.sat;
-
-        if (max.lat < point.lat) {
-            max.lat = point.lat;
-        }
-
-        if (max.lon < point.lon) {
-            max.lon = point.lon;
-        }
-
-        if (max.sat < point.sat) {
-            max.sat = point.sat;
-        }
 
         //push colors to the faceColors array
         faceColors.push(getColor(point.sat)); // one vertex on color, depending current data value
@@ -421,7 +408,7 @@ function init() {
     //set up webGL renderer
     glRenderer = new THREE.WebGLRenderer();
     glRenderer.setPixelRatio( window.devicePixelRatio );
-    glRenderer.setClearColor( 0xf0f0f0 );
+    glRenderer.setClearColor("#FFFFFF");
     glRenderer.setSize( windowWidth, windowHeight);
     container.appendChild( glRenderer.domElement );
 
