@@ -13,19 +13,24 @@ var light;
 
 var mouseX = 0, mouseY = 0;
 
-var windowWidth = 800,
-    windowHeight = 600;
+var windowWidth = 1200,
+    windowHeight = 800;
 
 var realData;
 
 var startPosition;
 
+var max = {
+  lat: 100, // z label.z; graphDimensions.w
+  lon: 167, // x label.x; graphDimensions.d
+  sat: 2000 // y label.y; graphDimensions.h
+};
 
 var data = {
     labels: {
-        y: ["2%", "4%", "6%", "8%"],
-        x: ['', "\'14","\'13","\'12","\'11","\'10","\'09","\'08","\'07","\'06","\'05"],
-        z: ["1-month","3-month","6-month","1-year","2-year","3-year","5-year","7-year","10-year", "20-year","30-year"]
+        y: ["500", "1000", "1500", "2000"],
+        x: ['', "20","40","60","80","100","120","140","160","180"],
+        z: ["", "10","20","30","40","50","60","70","80","90"]
     }
 };
 
@@ -349,6 +354,8 @@ function init() {
     var point;
     // on plane Geometry, change the z value to create the 3D area surface
     // just like when creating a terrain
+
+    var max = {lat: 0, lon: 0, sat: 0};
     for (var i =0; i< floorGeometry.vertices.length; i++){
 
         //push colors to the faceColors array
@@ -356,12 +363,26 @@ function init() {
         point.lat = +point.lat;
         point.lon = +point.lon;
         point.sat = +point.sat;
+
+        if (max.lat < point.lat) {
+            max.lat = point.lat;
+        }
+
+        if (max.lon < point.lon) {
+            max.lon = point.lon;
+        }
+
+        if (max.sat < point.sat) {
+            max.sat = point.sat;
+        }
+
         //push colors to the faceColors array
         faceColors.push(getColor(point.sat)); // one vertex on color, depending current data value
 
         floorGeometry.vertices[i].z = point.sat < 20 ? "null" : point.sat;
     }
 
+    console.log(max);
     //vertexColors
     for (var x= 0; x <floorGeometry.faces.length; x++){
         floorGeometry.faces[x].vertexColors[0] = new THREE.Color(faceColors[floorGeometry.faces[x].a]);
