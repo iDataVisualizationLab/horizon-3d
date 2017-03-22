@@ -50,7 +50,7 @@ d3.csv("data/ascii_2013all.optimized-2-2.optimized-2-2.converted.csv", function(
 var graphDimensions = {
     w:1000,
     d:2405,
-    h:400
+    h:800
 };
 
 
@@ -304,7 +304,7 @@ function init() {
     vFOVRadians = 2 * Math.atan( windowHeight / ( 2 * 1500 ) ),
         //fov = vFOVRadians * 180 / Math.PI;
         fov = 40;
-    startPosition = new THREE.Vector3( 0, 0, 3000 );
+    startPosition = new THREE.Vector3( 0, 0, 6000 );
     camera = new THREE.PerspectiveCamera( fov, windowWidth / windowHeight, 1, 30000 );
     camera.position.set( startPosition.x, startPosition.y, startPosition.z );
 
@@ -355,7 +355,6 @@ function init() {
     });
 
     var floorGeometry = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
-    // var floorGeometry = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 597, 1136);
     var faceColors = [];
     var lines={};
     var point;
