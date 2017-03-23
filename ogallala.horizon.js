@@ -414,7 +414,8 @@ function init() {
 
     var wireframeMaterial = new THREE.MeshBasicMaterial( {
         side:THREE.DoubleSide,
-        vertexColors: THREE.VertexColors
+        color: "#d9a78c"
+        // vertexColors: THREE.VertexColors
     });
 
     var lineMat = new THREE.LineBasicMaterial({
