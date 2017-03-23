@@ -363,6 +363,110 @@ function createGeometry(dataYear, scale, graphBase, lines) {
     return floorGeometry;
 }
 
+/**
+ *
+ * @param meshes - init mesh object
+ * @param dataYear - year data
+ * @param scale - scale saturated thickness value, default 1
+ * @param graphOffset - saturated thickness offset in coordinate system
+ * @param lines
+ * @param color1 - color of material to create mesh
+ *
+ * @return list of meshes with material from colors
+ */
+function createMeshes(meshes, dataYear, scale, graphOffset, lines, color1, threshold1, color2, threshold2, color3, threshold3, color4, threshold4, color5, threshold5) {
+    if (!meshes) {
+        meshes = [];
+    }
+
+    var floorGeometry = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
+    var geo2 = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
+    var geo3 = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
+    var geo4 = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
+    var geo5 = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
+    var point;
+    // on plane Geometry, change the z value to create the 3D area surface
+    // just like when creating a terrain
+    var myHeight;
+
+    for (var i =0; i< floorGeometry.vertices.length; i++){
+
+        //push colors to the faceColors array
+        point = dataYear[i];
+        point.lat = +point.lat;
+        point.lon = +point.lon;
+        point.sat = +point.sat;
+
+        //push colors to the faceColors array
+
+        myHeight = point.sat;
+        myHeight = ( myHeight < 0 ? "null" : myHeight );
+
+        floorGeometry.vertices[i].z = myHeight <= threshold1 ? (graphOffset + scale*myHeight) : "null";
+
+        if (myHeight > threshold1 && myHeight <= threshold2) { // 2%
+            geo2.vertices[i].z= graphOffset + scale*(myHeight- threshold1);
+
+        }
+        else {
+            geo2.vertices[i].z= "null";
+
+        }
+
+        if (myHeight > threshold2 && myHeight <= threshold3) { // 2%
+            geo3.vertices[i].z= graphOffset + scale*(myHeight- threshold2);
+
+        }
+        else {
+            geo3.vertices[i].z= "null";
+
+        }
+
+
+        if (!lines[floorGeometry.vertices[i].x]) {
+            lines[floorGeometry.vertices[i].x] = new THREE.Geometry();
+        }
+        //arrays for the grid lines
+        lines[floorGeometry.vertices[i].x].vertices.push(new THREE.Vector3(floorGeometry.vertices[i].x, floorGeometry.vertices[i].y, myHeight));
+    }
+
+    var material1 = new THREE.MeshBasicMaterial( {
+        side:THREE.DoubleSide,
+        color: color1
+    });
+    var floor1 = new THREE.Mesh(floorGeometry, material1);
+    floor1.rotation.x = -Math.PI/2;
+    floor1.position.y = -graphDimensions.h/2;
+    floor1.rotation.z = Math.PI/2;
+
+    meshes.push(floor1);
+
+
+    var material2 = new THREE.MeshBasicMaterial( {
+        side:THREE.DoubleSide,
+        color: color2
+    });
+    var floor2 = new THREE.Mesh(geo2, material2);
+    floor2.rotation.x = -Math.PI/2;
+    floor2.position.y = -graphDimensions.h/2;
+    floor2.rotation.z = Math.PI/2;
+
+    meshes.push(floor2);
+
+    var material3 = new THREE.MeshBasicMaterial( {
+        side:THREE.DoubleSide,
+        color: color3
+    });
+    var floor3 = new THREE.Mesh(geo3, material3);
+    floor3.rotation.x = -Math.PI/2;
+    floor3.position.y = -graphDimensions.h/2;
+    floor3.rotation.z = Math.PI/2;
+
+    meshes.push(floor3);
+
+    return meshes;
+}
+
 function init() {
 
     container = document.getElementById( 'container' );
@@ -414,7 +518,7 @@ function init() {
 
     var wireframeMaterial = new THREE.MeshBasicMaterial( {
         side:THREE.DoubleSide,
-        color: "#d9a78c"
+        color: "#fbd1b0"
         // vertexColors: THREE.VertexColors
     });
 
@@ -438,33 +542,42 @@ function init() {
     // floor2012.rotation.z = Math.PI/2;
 
     var lines = {};
-    var floorGeometry2013 = createGeometry(realData2013, 1, 0, lines);
-    var floor2013 = new THREE.Mesh(floorGeometry2013, wireframeMaterial);
-    floor2013.rotation.x = -Math.PI/2;
-    floor2013.position.y = -graphDimensions.h/2;
-    floor2013.rotation.z = Math.PI/2;
-
+    // var floorGeometry2013 = createGeometry(realData2013, 1, 0, lines);
+    // var floor2013 = new THREE.Mesh(floorGeometry2013, wireframeMaterial);
+    // floor2013.rotation.x = -Math.PI/2;
+    // floor2013.position.y = -graphDimensions.h/2;
+    // floor2013.rotation.z = Math.PI/2;
+    //
     var group = new THREE.Object3D();
-    // group.add(floor2011);
-    // group.add(floor2012);
-    group.add(floor2013);
+    // // group.add(floor2011);
+    // // group.add(floor2012);
+    // group.add(floor2013);
 
+    var meshes = createMeshes([], realData2013, 1, 0, lines,
+        "#fbd1b0", 80,
+        "#d9a78c", 140,
+        "#b49b69", 2000
+    );
+
+    for(var i = 0; i<meshes.length; i++) {
+        group.add(meshes[i]);
+    }
 
     //grid lines
-    for (var line in lines){
-        if (line == "-500"){
-            var graphLine= new THREE.Line(lines[line], blacklineMat);
-        }else{
-            var graphLine = new THREE.Line(lines[line], lineMat);
-        }
-
-        graphLine.rotation.x = -Math.PI/2;
-        graphLine.position.y = -graphDimensions.h/2;
-
-        graphLine.rotation.z = Math.PI/2;
-
-        group.add(graphLine);
-    }
+    // for (var line in lines){
+    //     if (line == "-500"){
+    //         var graphLine= new THREE.Line(lines[line], blacklineMat);
+    //     }else{
+    //         var graphLine = new THREE.Line(lines[line], lineMat);
+    //     }
+    //
+    //     graphLine.rotation.x = -Math.PI/2;
+    //     graphLine.position.y = -graphDimensions.h/2;
+    //
+    //     graphLine.rotation.z = Math.PI/2;
+    //
+    //     group.add(graphLine);
+    // }
 
 
 
