@@ -13,8 +13,8 @@ var light;
 
 var mouseX = 0, mouseY = 0;
 
-var windowWidth =  1200,
-    windowHeight = 800;
+var windowWidth =  1700,
+    windowHeight = 1200;
 
 var realData2011;
 var realData2012;
@@ -256,6 +256,11 @@ function gridInit(){
 
 
 var getColor = function (saturatedThickness) {
+
+    if (saturatedThickness <= 0) {
+        return "#cccccc";
+    }
+
     if (saturatedThickness < 20) {
         return "#ffffff";
     }
@@ -336,6 +341,7 @@ function createGeometry(dataYear, scale, graphBase) {
 
         myHeight = scale*point.sat;
 
+        // floorGeometry.vertices[i].z = graphBase + ( myHeight < 0 ? 0 : myHeight );
         floorGeometry.vertices[i].z = graphBase + ( myHeight < 0 ? "null" : myHeight );
     }
 
@@ -411,27 +417,27 @@ function init() {
         color: 0x000000
     });
 
-    var floorGeometry2011 = createGeometry(realData2011, 0.33, 0);
-    var floor2011 = new THREE.Mesh(floorGeometry2011, wireframeMaterial);
-    floor2011.rotation.x = -Math.PI/2;
-    floor2011.position.y = -graphDimensions.h/2;
-    floor2011.rotation.z = Math.PI/2;
+    // var floorGeometry2011 = createGeometry(realData2011, 0.33, 0);
+    // var floor2011 = new THREE.Mesh(floorGeometry2011, wireframeMaterial);
+    // floor2011.rotation.x = -Math.PI/2;
+    // floor2011.position.y = -graphDimensions.h/2;
+    // floor2011.rotation.z = Math.PI/2;
+    //
+    // var floorGeometry2012 = createGeometry(realData2012, 0.33, 400);
+    // var floor2012 = new THREE.Mesh(floorGeometry2012, wireframeMaterial);
+    // floor2012.rotation.x = -Math.PI/2;
+    // floor2012.position.y = -graphDimensions.h/2;
+    // floor2012.rotation.z = Math.PI/2;
 
-    var floorGeometry2012 = createGeometry(realData2012, 0.33, 400);
-    var floor2012 = new THREE.Mesh(floorGeometry2012, wireframeMaterial);
-    floor2012.rotation.x = -Math.PI/2;
-    floor2012.position.y = -graphDimensions.h/2;
-    floor2012.rotation.z = Math.PI/2;
-
-    var floorGeometry2013 = createGeometry(realData2013, 0.33, 800);
+    var floorGeometry2013 = createGeometry(realData2013, 1, 0);
     var floor2013 = new THREE.Mesh(floorGeometry2013, wireframeMaterial);
     floor2013.rotation.x = -Math.PI/2;
     floor2013.position.y = -graphDimensions.h/2;
     floor2013.rotation.z = Math.PI/2;
 
     var group = new THREE.Object3D();
-    group.add(floor2011);
-    group.add(floor2012);
+    // group.add(floor2011);
+    // group.add(floor2012);
     group.add(floor2013);
 
 
