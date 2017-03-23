@@ -312,7 +312,7 @@ var getColor = function (saturatedThickness) {
     return "#00003c";
 };
 
-function createGeometry(dataYear, scale, graphBase) {
+function createGeometry(dataYear, scale, graphBase, lines) {
     if (!graphBase) {
         graphBase = 0;
     }
@@ -340,9 +340,16 @@ function createGeometry(dataYear, scale, graphBase) {
         faceColors.push(getColor(point.sat)); // one vertex on color, depending current data value
 
         myHeight = scale*point.sat;
-
+        myHeight = ( myHeight < 0 ? "null" : myHeight );
         // floorGeometry.vertices[i].z = graphBase + ( myHeight < 0 ? 0 : myHeight );
-        floorGeometry.vertices[i].z = graphBase + ( myHeight < 0 ? "null" : myHeight );
+        floorGeometry.vertices[i].z = graphBase + myHeight;
+
+
+        if (!lines[floorGeometry.vertices[i].x]) {
+            lines[floorGeometry.vertices[i].x] = new THREE.Geometry();
+        }
+        //arrays for the grid lines
+        lines[floorGeometry.vertices[i].x].vertices.push(new THREE.Vector3(floorGeometry.vertices[i].x, floorGeometry.vertices[i].y, myHeight));
     }
 
     console.log(max);
@@ -429,7 +436,8 @@ function init() {
     // floor2012.position.y = -graphDimensions.h/2;
     // floor2012.rotation.z = Math.PI/2;
 
-    var floorGeometry2013 = createGeometry(realData2013, 1, 0);
+    var lines = {};
+    var floorGeometry2013 = createGeometry(realData2013, 1, 0, lines);
     var floor2013 = new THREE.Mesh(floorGeometry2013, wireframeMaterial);
     floor2013.rotation.x = -Math.PI/2;
     floor2013.position.y = -graphDimensions.h/2;
@@ -441,21 +449,21 @@ function init() {
     group.add(floor2013);
 
 
-    // //grid lines
-    // for (line in lines){
-    //     if (line == "-500"){
-    //         var graphLine= new THREE.Line(lines[line], blacklineMat);
-    //     }else{
-    //         var graphLine = new THREE.Line(lines[line], lineMat);
-    //     }
-    //
-    //     graphLine.rotation.x = -Math.PI/2;
-    //     graphLine.position.y = -graphDimensions.h/2;
-    //
-    //     graphLine.rotation.z = Math.PI/2;
-    //
-    //     glScene.add(graphLine);
-    // }
+    //grid lines
+    for (var line in lines){
+        if (line == "-500"){
+            var graphLine= new THREE.Line(lines[line], blacklineMat);
+        }else{
+            var graphLine = new THREE.Line(lines[line], lineMat);
+        }
+
+        graphLine.rotation.x = -Math.PI/2;
+        graphLine.position.y = -graphDimensions.h/2;
+
+        graphLine.rotation.z = Math.PI/2;
+
+        group.add(graphLine);
+    }
 
 
 
