@@ -341,10 +341,11 @@ function getThresholdObject(saturatedThickness) {
  * @param dataYear - year data
  * @param scale - scale saturated thickness value, default 1
  * @param graphOffset - saturated thickness offset in coordinate system
+ * @param lines - grid lines to hover the graph
  *
  * @return list of meshes with material from colors
  */
-function createMeshes(meshes, dataYear, scale, graphOffset) {
+function createMeshes(meshes, dataYear, scale, graphOffset, lines) {
 
     if (!meshes) {
         meshes = [];
@@ -390,6 +391,17 @@ function createMeshes(meshes, dataYear, scale, graphOffset) {
         else {
             floorGeometry.vertices[i].z = "null";
         }
+
+        if (thresholdObject == null) {
+            continue;
+        }
+
+        //arrays for the grid lines
+        if (!lines[floorGeometry.vertices[i].x]) {
+            lines[floorGeometry.vertices[i].x] = new THREE.Geometry();
+        }
+
+        lines[floorGeometry.vertices[i].x].vertices.push(new THREE.Vector3(floorGeometry.vertices[i].x, floorGeometry.vertices[i].y, graphOffset + scale * (myHeight-thresholdObject.pre)));
     }
 
     for (var x= 0; x <floorGeometry.faces.length; x++){
@@ -471,13 +483,29 @@ function init() {
     });
 
 
-    var meshes = createMeshes([], realData2013, 1, 0);
+    var lines = {};
+    var meshes = createMeshes([], realData2013, 1, 0, lines);
     var group = new THREE.Object3D();
     for(var i = 0; i<meshes.length; i++) {
         group.add(meshes[i]);
     }
 
     //grid lines
+
+    for (var line in lines){
+        if (line == "-500"){
+            var graphLine= new THREE.Line(lines[line], blacklineMat);
+        }else{
+            var graphLine = new THREE.Line(lines[line], lineMat);
+        }
+
+        graphLine.rotation.x = -Math.PI/2;
+        graphLine.position.y = -graphDimensions.h/2;
+
+        graphLine.rotation.z = Math.PI/2;
+
+        group.add(graphLine);
+    }
 
     // for (var i=0; i< lines.length; i++) {
     //     for (var line in lines[i]){
