@@ -488,7 +488,10 @@ function init() {
 
 
     var lines = [];
-    var meshes = createMeshes([], realData2013, 1, 0, lines);
+    var meshes = createMeshes([], realData2011, 1, 0, lines);
+    meshes = createMeshes(meshes, realData2012, 1, 400, lines);
+    meshes = createMeshes(meshes, realData2013, 1, 800, lines);
+
     var group = new THREE.Object3D();
     for(var i = 0; i<meshes.length; i++) {
         group.add(meshes[i]);
