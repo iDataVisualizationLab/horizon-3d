@@ -442,7 +442,14 @@ function createMeshes(meshes, dataYear, scale, graphOffset, lines, color1, thres
                 }
             }
             else {
-                myGeometries[thresholdColor.color].vertices[i].z = "null";
+
+                if (myHeight >=0) {
+                    myGeometries[thresholdColor.color].vertices[i].z = 0;
+                }
+                else {
+                    myGeometries[thresholdColor.color].vertices[i].z = "null";
+
+                }
             }
         }
     }
