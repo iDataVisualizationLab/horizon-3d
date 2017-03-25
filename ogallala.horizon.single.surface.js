@@ -366,6 +366,8 @@ function createMeshes(meshes, dataYear, scale, graphOffset, lines) {
 
     var faceColors = [];
 
+    var tmpLines = {};
+
     for (var i =0; i< floorGeometry.vertices.length; i++){
 
         //push colors to the faceColors array
@@ -397,11 +399,11 @@ function createMeshes(meshes, dataYear, scale, graphOffset, lines) {
         }
 
         //arrays for the grid lines
-        if (!lines[floorGeometry.vertices[i].x]) {
-            lines[floorGeometry.vertices[i].x] = new THREE.Geometry();
+        if (!tmpLines[floorGeometry.vertices[i].x]) {
+            tmpLines[floorGeometry.vertices[i].x] = new THREE.Geometry();
         }
 
-        lines[floorGeometry.vertices[i].x].vertices.push(new THREE.Vector3(floorGeometry.vertices[i].x, floorGeometry.vertices[i].y, graphOffset + scale * (myHeight-thresholdObject.pre)));
+        tmpLines[floorGeometry.vertices[i].x].vertices.push(new THREE.Vector3(floorGeometry.vertices[i].x, floorGeometry.vertices[i].y, graphOffset + scale * (myHeight-thresholdObject.pre)));
     }
 
     for (var x= 0; x <floorGeometry.faces.length; x++){
@@ -409,6 +411,8 @@ function createMeshes(meshes, dataYear, scale, graphOffset, lines) {
         floorGeometry.faces[x].vertexColors[1] = new THREE.Color(faceColors[floorGeometry.faces[x].b]);
         floorGeometry.faces[x].vertexColors[2] = new THREE.Color(faceColors[floorGeometry.faces[x].c]);
     }
+
+    lines.push(tmpLines);
 
     var myMesh = new THREE.Mesh(floorGeometry, wireframeMaterial);
     myMesh.rotation.x = -Math.PI/2;
@@ -483,7 +487,7 @@ function init() {
     });
 
 
-    var lines = {};
+    var lines = [];
     var meshes = createMeshes([], realData2013, 1, 0, lines);
     var group = new THREE.Object3D();
     for(var i = 0; i<meshes.length; i++) {
@@ -491,38 +495,24 @@ function init() {
     }
 
     //grid lines
+    var tmpLine;
+    for (var i=0; i< lines.length; i++) {
+        tmpLine = lines[i];
+        for (var line in lines[i]){
+            if (line == "-500"){
+                var graphLine= new THREE.Line(tmpLine[line], blacklineMat);
+            }else{
+                var graphLine = new THREE.Line(tmpLine[line], lineMat);
+            }
 
-    for (var line in lines){
-        if (line == "-500"){
-            var graphLine= new THREE.Line(lines[line], blacklineMat);
-        }else{
-            var graphLine = new THREE.Line(lines[line], lineMat);
+            graphLine.rotation.x = -Math.PI/2;
+            graphLine.position.y = -graphDimensions.h/2;
+
+            graphLine.rotation.z = Math.PI/2;
+
+            group.add(graphLine);
         }
-
-        graphLine.rotation.x = -Math.PI/2;
-        graphLine.position.y = -graphDimensions.h/2;
-
-        graphLine.rotation.z = Math.PI/2;
-
-        group.add(graphLine);
     }
-
-    // for (var i=0; i< lines.length; i++) {
-    //     for (var line in lines[i]){
-    //         if (line == "-500"){
-    //             var graphLine= new THREE.Line(lines[line], blacklineMat);
-    //         }else{
-    //             var graphLine = new THREE.Line(lines[line], lineMat);
-    //         }
-    //
-    //         graphLine.rotation.x = -Math.PI/2;
-    //         graphLine.position.y = -graphDimensions.h/2;
-    //
-    //         graphLine.rotation.z = Math.PI/2;
-    //
-    //         group.add(graphLine);
-    //     }
-    // }
 
 
     glScene.add(group);
