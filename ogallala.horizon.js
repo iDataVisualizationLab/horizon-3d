@@ -24,6 +24,23 @@ var startPosition;
 
 var controls;
 
+var THRESHOLD_COLOR = [
+    // {"threshold": 0, "color": "#cccccc"},
+    // {"threshold": 20, "color": "#ffffff", "pre": 0},
+    {"threshold": 80, "color": "#fbd1b0", "pre": 0},
+    {"threshold": 140, "color": "#d9a78c", "pre": 80},
+    {"threshold": 200, "color": "#b49b69", "pre": 140},
+    {"threshold": 260, "color": "#6b936b", "pre": 200},
+    {"threshold": 320, "color": "#00759e", "pre": 260},
+    {"threshold": 380, "color": "#006493", "pre": 320},
+    {"threshold": 440, "color": "#005388", "pre": 380},
+    {"threshold": 500, "color": "#00437c", "pre": 440},
+    {"threshold": 560, "color": "#00326e", "pre": 500},
+    {"threshold": 620, "color": "#00215d", "pre": 560},
+    {"threshold": 680, "color": "#00114d", "pre": 620},
+    {"threshold": 90000, "color": "#00003c", "pre": 680}
+];
+
 var max = {
     lat: 100, // z label.z; graphDimensions.w
     lon: 167, // x label.x; graphDimensions.d
@@ -374,22 +391,35 @@ function createGeometry(dataYear, scale, graphBase, lines) {
  *
  * @return list of meshes with material from colors
  */
-function createMeshes(meshes, dataYear, scale, graphOffset, lines, color1, threshold1, color2, threshold2, color3, threshold3, color4, threshold4, color5, threshold5) {
+function createMeshes(meshes, dataYear, scale, graphOffset, lines, color1, threshold1, color2, threshold2, color3, threshold3, color4, threshold4, color5, threshold5, color6) {
     if (!meshes) {
         meshes = [];
     }
 
+    // if (!lines) {
+    //     lines = [];
+    // }
     var floorGeometry = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
-    var geo2 = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
-    var geo3 = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
-    var geo4 = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
-    var geo5 = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
     var point;
     // on plane Geometry, change the z value to create the 3D area surface
     // just like when creating a terrain
     var myHeight;
 
-    for (var i =0; i< floorGeometry.vertices.length; i++){
+
+    var myGeometries = {};
+
+    var myColor;
+    var thresholdColor;
+
+    // init geometry
+    for (var i=0; i< THRESHOLD_COLOR.length; i++) {
+        thresholdColor = THRESHOLD_COLOR[i];
+        if (!myGeometries[thresholdColor.color]) {
+            myGeometries[thresholdColor.color] = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
+        }
+    }
+
+    for (i =0; i< floorGeometry.vertices.length; i++){
 
         //push colors to the faceColors array
         point = dataYear[i];
@@ -400,69 +430,39 @@ function createMeshes(meshes, dataYear, scale, graphOffset, lines, color1, thres
         //push colors to the faceColors array
 
         myHeight = point.sat;
+
+        myColor = getColor(myHeight);
         myHeight = ( myHeight < 0 ? "null" : myHeight );
 
-        floorGeometry.vertices[i].z = myHeight <= threshold1 ? (graphOffset + scale*myHeight) : "null";
-
-        if (myHeight > threshold1 && myHeight <= threshold2) { // 2%
-            geo2.vertices[i].z= graphOffset + scale*(myHeight- threshold1);
-
+        for(var j=0; j< THRESHOLD_COLOR.length; j++) {
+            thresholdColor = THRESHOLD_COLOR[j];
+            if (myHeight > 0 && (myColor == thresholdColor.color || (myHeight < thresholdColor.threshold && thresholdColor.threshold <= 80))) {
+                if (!!myGeometries[thresholdColor.color]) {
+                    myGeometries[thresholdColor.color].vertices[i].z = graphOffset + scale*(myHeight- thresholdColor.pre);
+                }
+            }
+            else {
+                myGeometries[thresholdColor.color].vertices[i].z = "null";
+            }
         }
-        else {
-            geo2.vertices[i].z= "null";
-
-        }
-
-        if (myHeight > threshold2 && myHeight <= threshold3) { // 2%
-            geo3.vertices[i].z= graphOffset + scale*(myHeight- threshold2);
-
-        }
-        else {
-            geo3.vertices[i].z= "null";
-
-        }
-
-
-        if (!lines[floorGeometry.vertices[i].x]) {
-            lines[floorGeometry.vertices[i].x] = new THREE.Geometry();
-        }
-        //arrays for the grid lines
-        lines[floorGeometry.vertices[i].x].vertices.push(new THREE.Vector3(floorGeometry.vertices[i].x, floorGeometry.vertices[i].y, myHeight));
     }
 
-    var material1 = new THREE.MeshBasicMaterial( {
-        side:THREE.DoubleSide,
-        color: color1
-    });
-    var floor1 = new THREE.Mesh(floorGeometry, material1);
-    floor1.rotation.x = -Math.PI/2;
-    floor1.position.y = -graphDimensions.h/2;
-    floor1.rotation.z = Math.PI/2;
+    var material;
+    var tmpMesh;
+    for(var color in myGeometries) {
+        material= new THREE.MeshBasicMaterial( {
+            side:THREE.DoubleSide,
+            color: color
+        });
 
-    meshes.push(floor1);
+        tmpMesh =  new THREE.Mesh(myGeometries[color], material);
+        tmpMesh.rotation.x = -Math.PI/2;
+        tmpMesh.position.y = -graphDimensions.h/2;
+        tmpMesh.rotation.z = Math.PI/2;
 
+        meshes.push(tmpMesh);
 
-    var material2 = new THREE.MeshBasicMaterial( {
-        side:THREE.DoubleSide,
-        color: color2
-    });
-    var floor2 = new THREE.Mesh(geo2, material2);
-    floor2.rotation.x = -Math.PI/2;
-    floor2.position.y = -graphDimensions.h/2;
-    floor2.rotation.z = Math.PI/2;
-
-    meshes.push(floor2);
-
-    var material3 = new THREE.MeshBasicMaterial( {
-        side:THREE.DoubleSide,
-        color: color3
-    });
-    var floor3 = new THREE.Mesh(geo3, material3);
-    floor3.rotation.x = -Math.PI/2;
-    floor3.position.y = -graphDimensions.h/2;
-    floor3.rotation.z = Math.PI/2;
-
-    meshes.push(floor3);
+    }
 
     return meshes;
 }
@@ -529,55 +529,36 @@ function init() {
         color: 0x000000
     });
 
-    // var floorGeometry2011 = createGeometry(realData2011, 0.33, 0);
-    // var floor2011 = new THREE.Mesh(floorGeometry2011, wireframeMaterial);
-    // floor2011.rotation.x = -Math.PI/2;
-    // floor2011.position.y = -graphDimensions.h/2;
-    // floor2011.rotation.z = Math.PI/2;
-    //
-    // var floorGeometry2012 = createGeometry(realData2012, 0.33, 400);
-    // var floor2012 = new THREE.Mesh(floorGeometry2012, wireframeMaterial);
-    // floor2012.rotation.x = -Math.PI/2;
-    // floor2012.position.y = -graphDimensions.h/2;
-    // floor2012.rotation.z = Math.PI/2;
 
-    var lines = {};
-    // var floorGeometry2013 = createGeometry(realData2013, 1, 0, lines);
-    // var floor2013 = new THREE.Mesh(floorGeometry2013, wireframeMaterial);
-    // floor2013.rotation.x = -Math.PI/2;
-    // floor2013.position.y = -graphDimensions.h/2;
-    // floor2013.rotation.z = Math.PI/2;
     //
     var group = new THREE.Object3D();
-    // // group.add(floor2011);
-    // // group.add(floor2012);
-    // group.add(floor2013);
 
-    var meshes = createMeshes([], realData2013, 1, 0, lines,
-        "#fbd1b0", 80,
-        "#d9a78c", 140,
-        "#b49b69", 2000
-    );
+    var meshes = createMeshes([], realData2013, 1, 0);
 
     for(var i = 0; i<meshes.length; i++) {
         group.add(meshes[i]);
     }
 
     //grid lines
-    // for (var line in lines){
-    //     if (line == "-500"){
-    //         var graphLine= new THREE.Line(lines[line], blacklineMat);
-    //     }else{
-    //         var graphLine = new THREE.Line(lines[line], lineMat);
+
+    // for (var i=0; i< lines.length; i++) {
+    //     for (var line in lines[i]){
+    //         if (line == "-500"){
+    //             var graphLine= new THREE.Line(lines[line], blacklineMat);
+    //         }else{
+    //             var graphLine = new THREE.Line(lines[line], lineMat);
+    //         }
+    //
+    //         graphLine.rotation.x = -Math.PI/2;
+    //         graphLine.position.y = -graphDimensions.h/2;
+    //
+    //         graphLine.rotation.z = Math.PI/2;
+    //
+    //         group.add(graphLine);
     //     }
-    //
-    //     graphLine.rotation.x = -Math.PI/2;
-    //     graphLine.position.y = -graphDimensions.h/2;
-    //
-    //     graphLine.rotation.z = Math.PI/2;
-    //
-    //     group.add(graphLine);
     // }
+
+
 
 
 
