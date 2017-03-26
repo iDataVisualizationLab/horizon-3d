@@ -13,8 +13,8 @@ var light;
 
 var mouseX = 0, mouseY = 0;
 
-var windowWidth =  1700,
-    windowHeight = 1200;
+var windowWidth =  700,
+    windowHeight = 800;
 
 var realData2011;
 var realData2012;
