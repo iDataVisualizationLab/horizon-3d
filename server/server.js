@@ -24,13 +24,17 @@ app.get('/', function (req, res) {
     res.end(buf, 'binary');
     // res.send(buf, { 'Content-Type': 'image/gif' }, 200);
 
-    for(var queryKey in req.query) {
-        if (!req.query.hasOwnProperty(queryKey)) {
-            continue;
-        }
+    // for(var queryKey in req.query) {
+    //     if (!req.query.hasOwnProperty(queryKey)) {
+    //         continue;
+    //     }
+    //
+    //     console.log("Query: " + queryKey + "=" + req.query[queryKey]);
+    // }
 
-        console.log("Query: " + queryKey + "=" + req.query[queryKey]);
-    }
+    // debugger;
+    // console.log(req.uri);
+    console.log(req.url);
 });
 
 

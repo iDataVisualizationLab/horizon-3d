@@ -1,8 +1,9 @@
-var graphTypeMerged = "merged";
-var graphTypeSmallMultiple = "multiple";
-var graphTypeHorizon = "horizon";
-var graphTypes = [graphTypeMerged, graphTypeSmallMultiple, graphTypeHorizon];
-
+var graphTypes = ['merged', 'multiple', 'horizon'];
+var graphTypeToFile = {
+    merged: 'ogallala.multiple.3-years.html',
+    multiple: 'ogallala.small.multiple.html',
+    horizon: 'ogallala.horizon.html'
+};
 
 var currentQuestionIndex = -1;
 var currentGraphTypeIndex = 0;
@@ -19,13 +20,11 @@ function handleQuestionConfirm() {
     // debugger;
     if (currentQuestionIndex > -1) {
         // handle logging
-        fireLogging();
+        fireLogging(graphType);
     }
-
 
     currentQuestionIndex ++;
     displayQuestion(currentQuestionIndex);
-
 
 }
 
@@ -42,48 +41,17 @@ function nextGraphType() {
     currentGraphTypeIndex = currentGraphTypeIndex % graphTypes.length;
     graphType = graphTypes[currentGraphTypeIndex];
 
+
 }
 
-function fireLogging() {
-
-
-    if (!questionsAndAnswers.hasOwnProperty(graphType)) {
-        console.log("Nothing to log. Invalid graph type: " + graphType);
+function displayGraphType(graphType) {
+    if (!graphTypeToFile.hasOwnProperty(graphType)) {
+        alert("Not found fine representation for this graph type: " + graphType);
         return;
     }
 
-    var graphTypeQuestions = questionsAndAnswers[graphType];
-
-    if (currentQuestionIndex >= graphTypeQuestions.length) {
-        console.log("Nothing to log. graph type: " + graphType + "; has invalid question index:" + currentQuestionIndex);
-        return;
-    }
-
-    var questionAnswer =  graphTypeQuestions[currentQuestionIndex];
-    var a = d3.select('#answer').select('input[name="answer"]:checked').node().value;
-    // d3.select('input[name="group-stack"]:checked').node().value;
-
-
-    var httpGetAsync = function httpGetAsync(theUrl, callback)
-    {
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-
-                if (!!callback) {
-                    callback(xmlHttp.responseText);
-                }
-            }
-
-        };
-        xmlHttp.open("GET", theUrl, true); // true for asynchronous
-        xmlHttp.send(null);
-    };
-
-    var myUrl = httpURLBase + '?test=myVarValue';
-    httpGetAsync(myUrl);
-    console.log(questionAnswer);
-    console.log(a);
+    var file = graphTypeToFile[graphType];
+    d3.select('#graph').attr('src', file);
 }
 
 function displayQuestion(currentQuestionIndex) {
@@ -97,6 +65,7 @@ function displayQuestion(currentQuestionIndex) {
     var graphTypeQuestions = questionsAndAnswers[graphType];
 
     if (currentQuestionIndex >= graphTypeQuestions.length) {
+
         nextGraphType();
     }
 
@@ -116,7 +85,11 @@ function displayQuestion(currentQuestionIndex) {
         .append('span')
         .html(function (d) {
             return '<input type="radio" name="answer" value="' + d.key  + '"/> ' + d.text + '<br/>';
-        })
+        });
+
+
+    displayGraphType(graphType);
+
 }
 
 handleQuestionConfirm();
