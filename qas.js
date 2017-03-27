@@ -11,27 +11,26 @@ function guid() {
 
 var httpURLBase = 'http://localhost:3000';
 var userId = guid();
-var questionsAndAnswers =  {
-    horizon: [
+var questionsAndAnswers =  [
         {
             question: {
                 key: "t1q1",
-                text: "What is the highest value?"
+                text: "What year has highest saturated thickness?"
             },
             answer: [
                 {
                     key: "t1q1a1",
-                    text:  "This is answer 1"
+                    text:  "Year 2011"
                 }
                 ,
                 {
                     key: "t1q1a2",
-                    text:  "This is answer 2"
+                    text:  "Year 2012"
                 }
                 ,
                 {
                     key: "t1q1a3",
-                    text:  "This is answer 3"
+                    text:  "Year 2013"
                 }
             ]
         },
@@ -40,134 +39,32 @@ var questionsAndAnswers =  {
         {
             question: {
                 key: "t1q2",
-                text: "What is the lowest value?"
+                text: "What location has highest saturated thickness"
             },
             answer: [
                 {
                     key: "answer1",
-                    text:  "This is answer 2"
+                    text:  "Location 1 year 2011"
                 }
                 ,
                 {
                     key: "answer2",
-                    text:  "This is answer 2"
+                    text:  "Location 2 year 2012"
                 }
                 ,
                 {
                     key: "answer3",
-                    text:  "This is answer 3"
+                    text:  "Location 3 year 2013"
                 }
             ]
         }
-    ],
-    merged: [
-        {
-            question: {
-                key: "t1q1",
-                text: "What is the highest value?"
-            },
-            answer: [
-                {
-                    key: "t1q1a1",
-                    text:  "This is answer 1"
-                }
-                ,
-                {
-                    key: "t1q1a2",
-                    text:  "This is answer 2"
-                }
-                ,
-                {
-                    key: "t1q1a3",
-                    text:  "This is answer 3"
-                }
-            ]
-        },
-
-
-        {
-            question: {
-                key: "t1q2",
-                text: "What is the lowest value?"
-            },
-            answer: [
-                {
-                    key: "answer1",
-                    text:  "This is answer 2"
-                }
-                ,
-                {
-                    key: "answer2",
-                    text:  "This is answer 2"
-                }
-                ,
-                {
-                    key: "answer3",
-                    text:  "This is answer 3"
-                }
-            ]
-        }
-    ],
-    multiple: [
-        {
-            question: {
-                key: "t1q1",
-                text: "What is the highest value?"
-            },
-            answer: [
-                {
-                    key: "t1q1a1",
-                    text:  "This is answer 1"
-                }
-                ,
-                {
-                    key: "t1q1a2",
-                    text:  "This is answer 2"
-                }
-                ,
-                {
-                    key: "t1q1a3",
-                    text:  "This is answer 3"
-                }
-            ]
-        },
-
-
-        {
-            question: {
-                key: "t1q2",
-                text: "What is the lowest value?"
-            },
-            answer: [
-                {
-                    key: "answer1",
-                    text:  "This is answer 2"
-                }
-                ,
-                {
-                    key: "answer2",
-                    text:  "This is answer 2"
-                }
-                ,
-                {
-                    key: "answer3",
-                    text:  "This is answer 3"
-                }
-            ]
-        }
-    ]
-};
+];
 
 
 function fireLogging(graphType) {
 
 
-    if (!questionsAndAnswers.hasOwnProperty(graphType)) {
-        console.log("Nothing to log. Invalid graph type: " + graphType);
-        return;
-    }
-
-    var graphTypeQuestions = questionsAndAnswers[graphType];
+    var graphTypeQuestions = questionsAndAnswers;
 
     if (currentQuestionIndex >= graphTypeQuestions.length) {
         console.log("Nothing to log. graph type: " + graphType + "; has invalid question index:" + currentQuestionIndex);

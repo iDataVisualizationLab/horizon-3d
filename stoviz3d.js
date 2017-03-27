@@ -2,7 +2,7 @@ var graphTypes = ['merged', 'multiple', 'horizon'];
 var graphTypeToFile = {
     merged: 'ogallala.multiple.3-years.html',
     multiple: 'ogallala.small.multiple.html',
-    horizon: 'ogallala.horizon.html'
+    horizon: 'ogallala.horizon.single.surface.html'
 };
 
 var currentQuestionIndex = -1;
@@ -11,12 +11,6 @@ var graphType = graphTypes[currentGraphTypeIndex];
 
 
 function handleQuestionConfirm() {
-
-    if (!questionsAndAnswers.hasOwnProperty(graphType)) {
-        alert("No questions on this graph type");
-
-        return;
-    }
     // debugger;
     if (currentQuestionIndex > -1) {
         // handle logging
@@ -24,7 +18,7 @@ function handleQuestionConfirm() {
     }
 
     currentQuestionIndex ++;
-    displayQuestion(currentQuestionIndex);
+    displayQuestion();
 
 }
 
@@ -51,26 +45,22 @@ function displayGraphType(graphType) {
     }
 
     var file = graphTypeToFile[graphType];
-    d3.select('#graph').attr('src', file);
+    var iframe = document.getElementById('graph');
+    var src = iframe.getAttribute('src');
+    if (file != src) {
+        d3.select('#graph').attr('src', file);
+    }
 }
 
-function displayQuestion(currentQuestionIndex) {
+function displayQuestion() {
 
-    if (!questionsAndAnswers.hasOwnProperty(graphType)) {
-        alert("No questions on this graph type to display");
-
-        return;
-    }
-
-    var graphTypeQuestions = questionsAndAnswers[graphType];
-
-    if (currentQuestionIndex >= graphTypeQuestions.length) {
+    if (currentQuestionIndex >= questionsAndAnswers.length) {
 
         nextGraphType();
     }
 
 
-    var questionAnswer =  graphTypeQuestions[currentQuestionIndex];
+    var questionAnswer =  questionsAndAnswers[currentQuestionIndex];
 
     d3.select("#question")
         .text(questionAnswer.question.text);
