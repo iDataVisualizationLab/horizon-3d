@@ -1,0 +1,9 @@
+{
+  "name": "data-converter",
+  "version": "0.0.1",
+
+  "dependencies": {
+    "file-system": "^2.2.2",
+    "express": "^4.15.2"
+  }
+}

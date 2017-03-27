@@ -21,22 +21,55 @@
     </style>
 </head>
 <body>
+<table border="3px" style="width: 2600px; height: 1200px; border-color: black">
+    <tr>
+        <td style="height: 150px; width: 650px">
+            <!--<form action="http://localhost:3000" method="get">-->
 
-<div id="container"></div>
+                <table width="100%">
+                    <tr>
+                        <td>
+                            <div id="question">Which is highest point on the graph?</div>
 
-<script src="libs/d3.v3.min.js" charset="utf-8"></script>
-<script src="libs/three.js"></script>
-<script src="libs/parser.js"></script>
-<script src="controls/FirstPersonControls.js"></script>
-<script src="controls/OrbitControls.js"></script>
-<script src="controls/TrackballControls.js"></script>
-<script src="libs/ImprovedNoise.js"></script>
-<script src="libs/Detector.js"></script>
-<script src="libs/stats.min.js"></script>
+                        </td>
+                    </tr>
+                  <tr>
+                      <td>
+                              <div id="answer">
+
+                              </div>
 
 
-<!--<script src="init.world.js"></script>-->
-<script src="ogallala.all.in.one.js"></script>
+                      </td>
+                  </tr>
+                    <tr>
+                        <td>
+                            <input type="button" value="Confirm Answer" onclick="handleQuestionConfirm();"/>
+
+                        </td>
+                    </tr>
+                </table>
+
+            <!--</form>-->
+
+        </td>
+        <td rowspan="2">
+            <iframe src="index.backup.html" width="100%" height="100%"></iframe>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span>Google map navigation tool</span>
+        </td>
+
+    </tr>
+
+</table>
+
+
+<script src="libs/d3.v3.min.js"></script>
+<script src="stoviz3d.js"></script>
 
 
 </body>
