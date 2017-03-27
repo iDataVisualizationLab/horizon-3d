@@ -13,7 +13,7 @@ var light;
 
 var mouseX = 0, mouseY = 0;
 
-var windowWidth =  700,
+var windowWidth =  1200,
     windowHeight = 800;
 
 var realData2011;
@@ -345,7 +345,7 @@ function getThresholdObject(saturatedThickness) {
  *
  * @return list of meshes with material from colors
  */
-function createHorizonMeshes(meshes, dataYear, scale, graphOffset, lines) {
+function createHorizonMeshes(meshes, dataYear, lines, scale, graphOffset) {
 
     if (!meshes) {
         meshes = [];
@@ -420,8 +420,84 @@ function createHorizonMeshes(meshes, dataYear, scale, graphOffset, lines) {
 
     myMesh.rotation.z = Math.PI/2;
 
+    // var lineMat = new THREE.LineBasicMaterial({
+    //     color: 0xffffff
+    // });
+    // var graphLine = new THREE.Line(tmpLines, lineMat);
+    // graphLine.rotation.x = -Math.PI/2;
+    // graphLine.position.y = -graphDimensions.h/2;
+    // graphLine.rotation.z = Math.PI/2;
+
+    // meshes.push(graphLine);
     meshes.push(myMesh);
+
+    // var group = new THREE.Object3D();
+    // group.add(myMesh);
+    // group.add(graphLine);
+    // meshes.push(group);
+
     return  meshes;
+}
+
+
+
+function createColorMesh(meshes, dataYear, color, lines, scale, graphOffset, translateX, translateY, translateZ) {
+    if (!graphOffset) {
+        graphOffset = 0;
+    }
+
+    if (!scale) {
+        scale = 1;
+    }
+
+    var floorGeometry = new THREE.PlaneGeometry(graphDimensions.w,graphDimensions.d, 148, 284);
+    var point;
+    // on plane Geometry, change the z value to create the 3D area surface
+    // just like when creating a terrain
+    var myHeight;
+
+    var tmpLines = {};
+
+    for (var i =0; i< floorGeometry.vertices.length; i++){
+
+        //push colors to the faceColors array
+        point = dataYear[i];
+        point.lat = +point.lat;
+        point.lon = +point.lon;
+        point.sat = +point.sat;
+
+        myHeight = scale*point.sat;
+
+        floorGeometry.vertices[i].z = graphOffset + ( myHeight < 0 ? "null" : myHeight );
+
+        //arrays for the grid lines
+        if (!tmpLines[floorGeometry.vertices[i].x]) {
+            tmpLines[floorGeometry.vertices[i].x] = new THREE.Geometry();
+        }
+
+       tmpLines[floorGeometry.vertices[i].x].vertices.push(new THREE.Vector3(floorGeometry.vertices[i].x + translateX, floorGeometry.vertices[i].y + translateY, graphOffset + myHeight + translateZ));
+    }
+
+    lines.push(tmpLines);
+
+
+    var material = new THREE.MeshBasicMaterial( {
+        side:THREE.DoubleSide,
+        color: color
+    });
+
+    var floor = new THREE.Mesh(floorGeometry, material);
+    floor.rotation.x = -Math.PI/2;
+    floor.position.y = -graphDimensions.h/2;
+    floor.rotation.z = Math.PI/2;
+
+    floor.position.x += translateX;
+    floor.position.y += translateY;
+    floor.position.z += translateZ;
+
+    meshes.push(floor);
+
+    return meshes;
 }
 
 function init() {
@@ -482,16 +558,18 @@ function init() {
 
 
     var lines = [];
-    var meshes = createHorizonMeshes([], realData2011, 1, 0, lines);
-    meshes = createHorizonMeshes(meshes, realData2012, 1, 400, lines);
-    meshes = createHorizonMeshes(meshes, realData2013, 1, 800, lines);
+    var meshes = createHorizonMeshes([], realData2011, lines, 1, 0);
+    meshes = createHorizonMeshes(meshes, realData2012, lines, 1, 400);
+    meshes = createHorizonMeshes(meshes, realData2013, lines, 1, 800);
+
+   meshes = createColorMesh(meshes, realData2013, "#FF0000", lines, 0.33, 800, -2500, 0, 0);
 
     var group = new THREE.Object3D();
     for(var i = 0; i<meshes.length; i++) {
         group.add(meshes[i]);
     }
 
-    //grid lines
+    // grid lines
     var tmpLine;
     for (var i=0; i< lines.length; i++) {
         tmpLine = lines[i];
