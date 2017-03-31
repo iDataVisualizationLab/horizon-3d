@@ -498,24 +498,24 @@ function init() {
     }
 
     //grid lines
-    var tmpLine;
-    for (var i=0; i< lines.length; i++) {
-        tmpLine = lines[i];
-        for (var line in lines[i]){
-            if (line == "-500"){
-                var graphLine= new THREE.Line(tmpLine[line], blacklineMat);
-            }else{
-                var graphLine = new THREE.Line(tmpLine[line], lineMat);
-            }
-
-            graphLine.rotation.x = -Math.PI/2;
-            graphLine.position.y = -graphDimensions.h/2;
-
-            graphLine.rotation.z = Math.PI/2;
-
-            group.add(graphLine);
-        }
-    }
+    // var tmpLine;
+    // for (var i=0; i< lines.length; i++) {
+    //     tmpLine = lines[i];
+    //     for (var line in lines[i]){
+    //         if (line == "-500"){
+    //             var graphLine= new THREE.Line(tmpLine[line], blacklineMat);
+    //         }else{
+    //             var graphLine = new THREE.Line(tmpLine[line], lineMat);
+    //         }
+    //
+    //         graphLine.rotation.x = -Math.PI/2;
+    //         graphLine.position.y = -graphDimensions.h/2;
+    //
+    //         graphLine.rotation.z = Math.PI/2;
+    //
+    //         group.add(graphLine);
+    //     }
+    // }
 
 
     glScene.add(group);
