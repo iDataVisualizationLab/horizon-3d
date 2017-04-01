@@ -1,6 +1,6 @@
 var graphTypes = ['merged', 'multiple', 'horizon'];
 var graphTypeToFile = {
-    merged: 'ogallala.multiple.3-years.html',
+    merged: 'ogallala.merged.3-years.html',
     multiple: 'ogallala.small.multiple.html',
     horizon: 'ogallala.horizon.single.surface.html'
 };
