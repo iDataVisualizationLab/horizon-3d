@@ -34,6 +34,7 @@ app.get('/', function (req, res) {
     var obj = {
         logTimestamp: (new Date()).getTime(),
         graphType: null,
+        task: null,
         questionKey: null,
         correct: false,
         duration: null
@@ -48,6 +49,15 @@ app.get('/', function (req, res) {
         console.log("Missing 'graphType' query param");
         return;
     }
+
+    if (query.hasOwnProperty("task")) {
+        obj.task = query["task"];
+    }
+    else {
+        console.log("Missing 'task' query param");
+        return;
+    }
+
 
     if (query.hasOwnProperty("questionKey")) {
         obj.questionKey = query["questionKey"];
