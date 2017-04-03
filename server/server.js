@@ -23,8 +23,6 @@ app.get('/', function (req, res) {
         0x02, 0x44, 0x01, 0x00, 0x3b]);
 
 
-    res.writeHead(200, {'Content-Type': 'image/gif' });
-    res.end(buf, 'binary');
     res.send(buf, { 'Content-Type': 'image/gif' }, 200);
 
     console.log(req.url);
