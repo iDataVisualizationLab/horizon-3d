@@ -29,7 +29,6 @@ var userId = guid();
 var questionsAndAnswers =  [
         {
             question: {
-                task: 1,
                 key: "t1q1",
                 text: "What year has highest saturated thickness?"
             },
