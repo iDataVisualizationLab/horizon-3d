@@ -4,9 +4,13 @@ var fs = require('fs');
 var csvWriter = require('csv-write-stream');
 
 
-var trialStarted = false;
-var outputFile = 'trials.csv';
+// for user study testing purpose
+// var trialStarted = false;
 
+// for actual user study
+var trialStarted = true;
+var outputFile = 'trials.csv';
+var sendHeader = true;
 
 
 app.post('/', function (req, res) {
@@ -71,11 +75,12 @@ app.get('/', function (req, res) {
     }
 
 
-
-    var writer = csvWriter();
+    var writer = csvWriter({sendHeaders: sendHeader});
     writer.pipe(fs.createWriteStream(outputFile, {'flags': 'a'}));
     writer.write(obj);
     writer.end();
+
+    sendHeader = false;
 
 });
 
