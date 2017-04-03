@@ -1,5 +1,12 @@
 var express = require('express');
 var app = express();
+var fs = require('fs');
+var parse = require('csv-parse');
+var csvWriter = require('csv-write-stream');
+
+var outputFile = 'trials.csv';
+
+
 
 app.post('/', function (req, res) {
     debugger;
@@ -14,27 +21,59 @@ app.get('/', function (req, res) {
         0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x02,
         0x02, 0x44, 0x01, 0x00, 0x3b]);
 
-    // var EMPTY_GIF[] = {
-    //     0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00, 0x01, 0x00, 0x80, 0x00,
-    //     0x00, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x2c, 0x00, 0x00, 0x00, 0x00,
-    //     0x01, 0x00, 0x01, 0x00, 0x00, 0x02, 0x02, 0x44, 0x01, 0x00, 0x3b
-    // };
+
+    console.log(req.url);
+
+    var obj = {
+        logTimestamp: (new Date()).getTime(),
+        graphType: null,
+        questionKey: null,
+        isAnswerCorrect: false,
+        duration: null
+    };
+
+    var query = req.query;
+
+    if (query.hasOwnProperty("graphType")) {
+        obj.graphType = query["graphType"];
+    }
+    else {
+        console.log("Missing 'graphType' query param");
+        return;
+    }
+
+    if (query.hasOwnProperty("questionKey")) {
+        obj.questionKey = query["questionKey"];
+    }
+    else {
+        console.log("Missing 'questionKey' query param");
+        return;
+    }
+
+    if (query.hasOwnProperty("duration")) {
+        obj.duration = query["duration"];
+    }
+    else {
+        console.log("Missing 'duration' query param");
+        return;
+    }
+
+    if (query.hasOwnProperty("isAnswerCorrect")) {
+        obj.isAnswerCorrect = query["isAnswerCorrect"];
+    }
 
     res.writeHead(200, {'Content-Type': 'image/gif' });
     res.end(buf, 'binary');
     // res.send(buf, { 'Content-Type': 'image/gif' }, 200);
 
-    // for(var queryKey in req.query) {
-    //     if (!req.query.hasOwnProperty(queryKey)) {
-    //         continue;
-    //     }
-    //
-    //     console.log("Query: " + queryKey + "=" + req.query[queryKey]);
-    // }
 
-    // debugger;
-    // console.log(req.uri);
-    console.log(req.url);
+    var writer = csvWriter();
+    writer.pipe(fs.createWriteStream(outputFile, {'flags': 'a'}));
+
+    writer.write(obj);
+
+    writer.end();
+
 });
 
 
