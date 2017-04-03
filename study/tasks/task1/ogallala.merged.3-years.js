@@ -324,7 +324,7 @@ var getColor = function (saturatedThickness) {
     return "#00003c";
 };
 
-
+var myPoint;
 function createGeometry(dataYear, scale, graphBase) {
     if (!graphBase) {
         graphBase = 0;
@@ -342,6 +342,7 @@ function createGeometry(dataYear, scale, graphBase) {
     var myHeight;
 
     trialLocation.sat = null;
+    trialLocation.vertices = [];
 
     for (var i =0; i< floorGeometry.vertices.length; i++){
 
@@ -363,6 +364,7 @@ function createGeometry(dataYear, scale, graphBase) {
 
         if (point.lat == trialLocation.lat && point.lon == trialLocation.lon) {
             trialLocation.sat = point.sat;
+            trialLocation.vertices.push(new THREE.Vector3(floorGeometry.vertices[i].x, floorGeometry.vertices[i].y, scale*point.sat))
         }
 
         if (max.lat < point.lat) {
@@ -383,6 +385,13 @@ function createGeometry(dataYear, scale, graphBase) {
         myHeight = scale*point.sat;
 
         floorGeometry.vertices[i].z = graphBase + ( myHeight < 0 ? "null" : myHeight );
+
+        // if (!lines[floorGeometry.vertices[i].x]) {
+        //     lines[floorGeometry.vertices[i].x] = new THREE.Geometry();
+        // }
+        //
+        // lines[floorGeometry.vertices[i].x].vertices.push(new THREE.Vector3(floorGeometry.vertices[i].x, floorGeometry.vertices[i].y, realData[i][2]*100));
+
     }
 
     console.log(max);
@@ -450,19 +459,22 @@ function init() {
     //     vertexColors: THREE.VertexColors
     // });
 
+    var cTen = d3.scale.category10();
+    var colorRange = cTen.range();
+
     var material2011 = new THREE.MeshBasicMaterial( {
         side:THREE.DoubleSide,
-        color: 0xcccccc
+        color: colorRange[0]
     });
 
     var redMaterial = new THREE.MeshBasicMaterial( {
         side:THREE.DoubleSide,
-        color: 0xFF0000
+        color: colorRange[1]
     });
 
     var material2013 = new THREE.MeshBasicMaterial( {
         side:THREE.DoubleSide,
-        color: 0x0000FF
+        color: colorRange[2]
     });
 
     var lineMat = new THREE.LineBasicMaterial({
@@ -514,8 +526,11 @@ function init() {
 
 
     var dotGeometry = new THREE.Geometry();
-    dotGeometry.vertices.push(new THREE.Vector3(trialLocation.lat, trialLocation.lon, trialLocation.sat));
-    var dotMaterial = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false, color: '#000000' } );
+    for(var i=0; i< trialLocation.vertices.length; i ++) {
+        dotGeometry.vertices.push(trialLocation.vertices[i]);
+    }
+    // dotGeometry.vertices.push(new THREE.Vector3(trialLocation.lat, trialLocation.lon, trialLocation.sat));
+    var dotMaterial = new THREE.PointCloudMaterial( { size: 8, sizeAttenuation: false, color: '#000000' } );
     var dot = new THREE.Points( dotGeometry, dotMaterial );
     dot.rotation.x = -Math.PI/2;
     dot.position.y = -graphDimensions.h/2;
