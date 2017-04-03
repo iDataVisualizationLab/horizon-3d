@@ -26,7 +26,7 @@ var locations = [
     }
 ];
 
-var trialLocationIndex = locations.length * Math.round(Math.random());
+var trialLocationIndex = (locations.length -1) * Math.round(Math.random());
 var trialLocation = locations[trialLocationIndex];
 
 var graphTypeToFile = {
