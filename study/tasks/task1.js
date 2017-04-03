@@ -1,8 +1,8 @@
 var graphTypes = ['merged', 'multiple', 'horizon'];
 var graphTypeToFile = {
-    merged: 'ogallala.merged.3-years.html',
-    multiple: 'ogallala.small.multiple.html',
-    horizon: 'ogallala.horizon.single.surface.html'
+    merged: 'task1/ogallala.merged.3-years.html',
+    multiple: 'task1/ogallala.small.multiple.html',
+    horizon: 'task1/ogallala.horizon.single.surface.html'
 };
 
 var currentQuestionIndex = -1;
