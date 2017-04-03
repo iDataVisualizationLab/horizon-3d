@@ -4,6 +4,8 @@
 
   "dependencies": {
     "file-system": "^2.2.2",
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "csv-write-stream": "^2.0.0"
+
   }
 }

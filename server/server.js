@@ -1,9 +1,10 @@
 var express = require('express');
 var app = express();
 var fs = require('fs');
-var parse = require('csv-parse');
 var csvWriter = require('csv-write-stream');
 
+
+var trialStarted = false;
 var outputFile = 'trials.csv';
 
 
@@ -62,16 +63,19 @@ app.get('/', function (req, res) {
         obj.isAnswerCorrect = query["isAnswerCorrect"];
     }
 
+    if (trialStarted == false) {
+        console.log(obj);
+        return;
+    }
+
     res.writeHead(200, {'Content-Type': 'image/gif' });
     res.end(buf, 'binary');
-    // res.send(buf, { 'Content-Type': 'image/gif' }, 200);
+    res.send(buf, { 'Content-Type': 'image/gif' }, 200);
 
 
     var writer = csvWriter();
     writer.pipe(fs.createWriteStream(outputFile, {'flags': 'a'}));
-
     writer.write(obj);
-
     writer.end();
 
 });
