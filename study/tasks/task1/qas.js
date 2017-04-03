@@ -9,28 +9,6 @@ function guid() {
         s4() + '-' + s4() + s4() + s4();
 }
 
-var locations = [
-    {
-        x: 100,
-        y: 250
-    },
-
-    {
-        x: 150,
-        y: 200
-    },
-
-    {
-        x: 100,
-        y: 300
-    }
-];
-
-var trialLocationIndex = 2* Math.round(Math.random());
-var trialLocation = locations[trialLocationIndex];
-
-console.log(trialLocation);
-
 var httpURLBase = 'http://localhost:3000';
 var userId = guid();
 var questionsAndAnswers =  [

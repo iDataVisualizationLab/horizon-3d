@@ -3,6 +3,11 @@ if ( ! Detector.webgl ) {
     document.getElementById( 'container' ).innerHTML = "";
 }
 
+var url = window.location.href;
+
+var trialLocation = {};
+trialLocation.lat = +getParameterByName("lat", url);
+trialLocation.lon =  +getParameterByName("lon", url);
 
 var container, stats;
 
@@ -25,9 +30,9 @@ var startPosition;
 var controls;
 
 var max = {
-    lat: 100, // z label.z; graphDimensions.w
-    lon: 167, // x label.x; graphDimensions.d
-    sat: 2000 // y label.y; graphDimensions.h
+    lat: 0, // z label.z; graphDimensions.w
+    lon: 0, // x label.x; graphDimensions.d
+    sat: -9999 // y label.y; graphDimensions.h
 };
 
 // var max = {
@@ -66,6 +71,18 @@ var graphDimensions = {
     d:2405,
     h:1200
 };
+
+function getParameterByName(name, url) {
+    if (!url) {
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 
 
 function labelAxis(width, data, direction){
@@ -307,6 +324,7 @@ var getColor = function (saturatedThickness) {
     return "#00003c";
 };
 
+
 function createGeometry(dataYear, scale, graphBase) {
     if (!graphBase) {
         graphBase = 0;
@@ -323,6 +341,8 @@ function createGeometry(dataYear, scale, graphBase) {
     // just like when creating a terrain
     var myHeight;
 
+    trialLocation.sat = null;
+
     for (var i =0; i< floorGeometry.vertices.length; i++){
 
         //push colors to the faceColors array
@@ -330,6 +350,32 @@ function createGeometry(dataYear, scale, graphBase) {
         point.lat = +point.lat;
         point.lon = +point.lon;
         point.sat = +point.sat;
+
+        if (point.sat > 0 && point < 200) {
+            debugger;
+        }
+        else if (point.sat < 600 && point.sat  >0) {
+            // debugger;
+        }
+        else if (point.sat > 0 && point.sat > 600) {
+            // debugger;
+        }
+
+        if (point.lat == trialLocation.lat && point.lon == trialLocation.lon) {
+            trialLocation.sat = point.sat;
+        }
+
+        if (max.lat < point.lat) {
+            max.lat = point.lat;
+        }
+
+        if (max.lon < point.lon) {
+            max.lon = point.lon;
+        }
+
+        if (max.sat < point.sat) {
+            max.sat = point.sat;
+        }
 
         //push colors to the faceColors array
         faceColors.push(getColor(point.sat)); // one vertex on color, depending current data value
@@ -468,9 +514,13 @@ function init() {
 
 
     var dotGeometry = new THREE.Geometry();
-    dotGeometry.vertices.push(new THREE.Vector3( 800, 600, 600));
+    dotGeometry.vertices.push(new THREE.Vector3(trialLocation.lat, trialLocation.lon, trialLocation.sat));
     var dotMaterial = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false, color: '#000000' } );
     var dot = new THREE.Points( dotGeometry, dotMaterial );
+    dot.rotation.x = -Math.PI/2;
+    dot.position.y = -graphDimensions.h/2;
+    dot.rotation.z = Math.PI/2;
+
     glScene.add( dot );
 
 

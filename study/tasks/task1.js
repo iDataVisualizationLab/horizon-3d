@@ -1,8 +1,38 @@
 var graphTypes = ['merged', 'multiple', 'horizon'];
+var locations = [
+    {
+        lat: 20,
+        lon: 1,
+        sat: null
+
+    },
+
+    {
+        lat: 18,
+        lon: 23,
+        sat: null
+    },
+
+    {
+        lat: 57,
+        lon: 56,
+        sat: null
+    },
+
+    {
+        lat: 63,
+        lon: 74,
+        sat: null
+    }
+];
+
+var trialLocationIndex = locations.length * Math.round(Math.random());
+var trialLocation = locations[trialLocationIndex];
+
 var graphTypeToFile = {
-    merged: 'task1/ogallala.merged.3-years.html',
-    multiple: 'task1/ogallala.small.multiple.html',
-    horizon: 'task1/ogallala.horizon.single.surface.html'
+    merged: 'task1/ogallala.merged.3-years.html?lat=' + trialLocation.lat + '&lon=' + trialLocation.lon ,
+    multiple: 'task1/ogallala.small.multiple.html?lat=' + trialLocation.lat + '&lon=' + trialLocation.lon ,
+    horizon: 'task1/ogallala.horizon.single.surface.html?lat=' + trialLocation.lat + '&lon=' + trialLocation.lon
 };
 
 var currentQuestionIndex = -1;
