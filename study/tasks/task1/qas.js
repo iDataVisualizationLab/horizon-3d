@@ -49,31 +49,6 @@ var questionsAndAnswers =  [
                     text:  "Year 2013"
                 }
             ]
-        },
-
-
-        {
-            question: {
-                task: 2,
-                key: "t1q2",
-                text: "What location has highest saturated thickness"
-            },
-            answer: [
-                {
-                    key: "answer1",
-                    text:  "Location 1 year 2011"
-                }
-                ,
-                {
-                    key: "answer2",
-                    text:  "Location 2 year 2012"
-                }
-                ,
-                {
-                    key: "answer3",
-                    text:  "Location 3 year 2013"
-                }
-            ]
         }
 ];
 
@@ -109,7 +84,7 @@ function fireLogging(graphType) {
         xmlHttp.send(null);
     };
 
-    var myUrl = httpURLBase + '?user=' + userId + '&graphType=' + graphType + '&task=' +  questionAnswer.question.task + '&questionKey=' + questionAnswer.question.key + '&correct=1' + '&';
+    var myUrl = httpURLBase + '?user=' + userId + '&graphType=' + graphType + '&task=Task1&questionKey=' + questionAnswer.question.key + '&correct=1' + '&duration=20';
     httpGetAsync(myUrl);
     console.log(questionAnswer);
     console.log(a);
