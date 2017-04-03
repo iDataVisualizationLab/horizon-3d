@@ -512,7 +512,7 @@ function init() {
     floor2011.rotation.x = -Math.PI/2;
     floor2011.position.y = -graphDimensions.h/2;
     floor2011.rotation.z = Math.PI/2;
-    addDot('#FF0000', trialLocation.vertices);
+    addDot(colorRange[0], trialLocation.vertices);
     trialLocation.vertices = [];
 
     var floorGeometry2012 = createGeometry(realData2012);
@@ -520,7 +520,7 @@ function init() {
     floor2012.rotation.x = -Math.PI/2;
     floor2012.position.y = -graphDimensions.h/2;
     floor2012.rotation.z = Math.PI/2;
-    addDot('#00FF00', trialLocation.vertices);
+    addDot(colorRange[1], trialLocation.vertices);
     trialLocation.vertices = [];
 
     var floorGeometry2013 = createGeometry(realData2013);
@@ -528,7 +528,7 @@ function init() {
     floor2013.rotation.x = -Math.PI/2;
     floor2013.position.y = -graphDimensions.h/2;
     floor2013.rotation.z = Math.PI/2;
-    addDot('#000000', trialLocation.vertices);
+    addDot(colorRange[2], trialLocation.vertices);
     trialLocation.vertices = [];
 
     var group = new THREE.Object3D();
