@@ -1,29 +1,29 @@
 var graphTypes = ['merged', 'multiple', 'horizon'];
 var locations = [
     {
-        lat: 20,
-        lon: 1,
+        lat: 12,
+        lon: 255,
         sat: null
 
     },
-
-    {
-        lat: 18,
-        lon: 23,
-        sat: null
-    },
-
-    {
-        lat: 57,
-        lon: 56,
-        sat: null
-    },
-
-    {
-        lat: 63,
-        lon: 74,
-        sat: null
-    }
+    //
+    // {
+    //     lat: 18,
+    //     lon: 23,
+    //     sat: null
+    // },
+    //
+    // {
+    //     lat: 57,
+    //     lon: 56,
+    //     sat: null
+    // },
+    //
+    // {
+    //     lat: 63,
+    //     lon: 74,
+    //     sat: null
+    // }
 ];
 
 var trialLocationIndex = (locations.length -1) * Math.round(Math.random());

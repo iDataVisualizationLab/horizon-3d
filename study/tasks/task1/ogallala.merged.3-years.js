@@ -344,6 +344,10 @@ function createGeometry(dataYear, scale, graphBase) {
     trialLocation.sat = null;
     trialLocation.vertices = [];
 
+    var point200 = [];
+    var point600 = [];
+    var pointAbove600 = [];
+
     for (var i =0; i< floorGeometry.vertices.length; i++){
 
         //push colors to the faceColors array
@@ -352,14 +356,14 @@ function createGeometry(dataYear, scale, graphBase) {
         point.lon = +point.lon;
         point.sat = +point.sat;
 
-        if (point.sat > 0 && point < 200) {
-            debugger;
+        if (point.sat > 0 && point.sat < 300) {
+            point200.push(point);
         }
-        else if (point.sat < 600 && point.sat  >0) {
-            // debugger;
+        else if (point.sat < 600 && point.sat  >300) {
+            point600.push(point);
         }
-        else if (point.sat > 0 && point.sat > 600) {
-            // debugger;
+        else if (point.sat > 600) {
+            pointAbove600.push(point);
         }
 
         if (point.lat == trialLocation.lat && point.lon == trialLocation.lon) {
@@ -394,6 +398,11 @@ function createGeometry(dataYear, scale, graphBase) {
 
     }
 
+    console.log(point200);
+    console.log(point600);
+    console.log(pointAbove600);
+
+    debugger;
     console.log(max);
     //vertexColors
     for (var x= 0; x <floorGeometry.faces.length; x++){
@@ -403,6 +412,20 @@ function createGeometry(dataYear, scale, graphBase) {
     }
 
     return floorGeometry;
+}
+
+function addDot(myColor, vertices) {
+    var dotGeometry = new THREE.Geometry();
+    for(var i=0; i< trialLocation.vertices.length; i ++) {
+        dotGeometry.vertices.push(vertices[i]);
+    }
+    var dotMaterial = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false, color: myColor } );
+    var dot = new THREE.Points( dotGeometry, dotMaterial );
+    dot.rotation.x = -Math.PI/2;
+    dot.position.y = -graphDimensions.h/2;
+    dot.rotation.z = Math.PI/2;
+
+    glScene.add( dot );
 }
 
 function init() {
@@ -489,18 +512,24 @@ function init() {
     floor2011.rotation.x = -Math.PI/2;
     floor2011.position.y = -graphDimensions.h/2;
     floor2011.rotation.z = Math.PI/2;
+    addDot('#FF0000', trialLocation.vertices);
+    trialLocation.vertices = [];
 
     var floorGeometry2012 = createGeometry(realData2012);
     var floor2012 = new THREE.Mesh(floorGeometry2012, redMaterial);
     floor2012.rotation.x = -Math.PI/2;
     floor2012.position.y = -graphDimensions.h/2;
     floor2012.rotation.z = Math.PI/2;
+    addDot('#00FF00', trialLocation.vertices);
+    trialLocation.vertices = [];
 
     var floorGeometry2013 = createGeometry(realData2013);
     var floor2013 = new THREE.Mesh(floorGeometry2013, material2013);
     floor2013.rotation.x = -Math.PI/2;
     floor2013.position.y = -graphDimensions.h/2;
     floor2013.rotation.z = Math.PI/2;
+    addDot('#000000', trialLocation.vertices);
+    trialLocation.vertices = [];
 
     var group = new THREE.Object3D();
     group.add(floor2011);
@@ -523,23 +552,6 @@ function init() {
     //
     //     glScene.add(graphLine);
     // }
-
-
-    var dotGeometry = new THREE.Geometry();
-    for(var i=0; i< trialLocation.vertices.length; i ++) {
-        dotGeometry.vertices.push(trialLocation.vertices[i]);
-    }
-    // dotGeometry.vertices.push(new THREE.Vector3(trialLocation.lat, trialLocation.lon, trialLocation.sat));
-    var dotMaterial = new THREE.PointCloudMaterial( { size: 8, sizeAttenuation: false, color: '#000000' } );
-    var dot = new THREE.Points( dotGeometry, dotMaterial );
-    dot.rotation.x = -Math.PI/2;
-    dot.position.y = -graphDimensions.h/2;
-    dot.rotation.z = Math.PI/2;
-
-    glScene.add( dot );
-
-
-
 
     glScene.add(group);
 
