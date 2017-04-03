@@ -29,7 +29,7 @@ app.get('/', function (req, res) {
         logTimestamp: (new Date()).getTime(),
         graphType: null,
         questionKey: null,
-        isAnswerCorrect: false,
+        correct: false,
         duration: null
     };
 
@@ -59,8 +59,8 @@ app.get('/', function (req, res) {
         return;
     }
 
-    if (query.hasOwnProperty("isAnswerCorrect")) {
-        obj.isAnswerCorrect = query["isAnswerCorrect"];
+    if (query.hasOwnProperty("correct")) {
+        obj.correct = query["correct"];
     }
 
     if (trialStarted == false) {
