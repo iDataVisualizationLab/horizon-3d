@@ -8,10 +8,10 @@ c3.generate({
     data: {
         x: 'x',
         columns: [
-            ['x', 2, 3, 7],
-            ['Simple Surface Graph', 5, 8, 40],
-            ['Small Multiples', 5, 15, 25],
-            ['3D Horizon Graph', 10, 13, 15]
+            ['x', 2, 3, 5, 7],
+            ['Simple Surface Graph', 5, 8, 30, 45],
+            ['Small Multiples', 7, 15, 20, 24],
+            ['3D Horizon Graph', 10, 18, 26, 32]
         ],
         type: 'bar'
     },
@@ -22,7 +22,7 @@ c3.generate({
     },
     axis: {
         y: {
-            max: 20,
+            max: 50,
             // padding: 0,
 
             label: { // ADD
