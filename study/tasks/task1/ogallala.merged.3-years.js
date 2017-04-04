@@ -342,6 +342,8 @@ function createGeometry(dataYear, scale, graphBase) {
     var myHeight;
 
     trialLocation.sat = null;
+    trialLocation.x = null;
+    trialLocation.y = null;
     trialLocation.vertices = [];
 
     var point200 = [];
@@ -368,6 +370,8 @@ function createGeometry(dataYear, scale, graphBase) {
 
         if (point.lat == trialLocation.lat && point.lon == trialLocation.lon) {
             trialLocation.sat = point.sat;
+            trialLocation.x = floorGeometry.vertices[i].x;
+            trialLocation.y = floorGeometry.vertices[i].y;
             trialLocation.vertices.push(new THREE.Vector3(floorGeometry.vertices[i].x, floorGeometry.vertices[i].y, scale*point.sat))
         }
 
@@ -402,7 +406,6 @@ function createGeometry(dataYear, scale, graphBase) {
     console.log(point600);
     console.log(pointAbove600);
 
-    debugger;
     console.log(max);
     //vertexColors
     for (var x= 0; x <floorGeometry.faces.length; x++){
@@ -414,7 +417,7 @@ function createGeometry(dataYear, scale, graphBase) {
     return floorGeometry;
 }
 
-function addDot(myColor, vertices) {
+function addDot(myColor, vertices, text) {
     var dotGeometry = new THREE.Geometry();
     for(var i=0; i< trialLocation.vertices.length; i ++) {
         dotGeometry.vertices.push(vertices[i]);
@@ -426,7 +429,66 @@ function addDot(myColor, vertices) {
     dot.rotation.z = Math.PI/2;
 
     glScene.add( dot );
+
+    if (!!text) {
+        var location = {
+            x: trialLocation.x,
+            y: trialLocation.y
+        };
+
+        addText(location, text)
+    }
 }
+
+
+function addText(position, myText) {
+
+    var loader = new THREE.FontLoader();
+
+    loader.load( '../Open_Sans_Regular.json', function ( font ) {
+
+        var options = {
+            size: 90,
+            height: 90,
+            weight: 'normal',
+            font: font,
+            style: 'normal',
+            curveSegments: 12,
+            bevelThickness: 2,
+            bevelSize: 4,
+            bevelEnabled: true,
+            material: 0,
+            extrudeMaterial: 1
+        };
+
+        if (!position) {
+            position = {x: 0, y: 0};
+        }
+
+        var textGeo = new THREE.TextGeometry(myText, options);
+        var textMatterial = new THREE.MeshBasicMaterial( {
+            side:THREE.DoubleSide,
+            color: '#000000'
+        });
+
+        textGeo.computeBoundingBox();
+        textGeo.computeVertexNormals();
+
+        var textMesh = new THREE.Mesh(textGeo, textMatterial);
+        // textMesh.rotation.x = -Math.PI/2;
+        textMesh.position.y = -graphDimensions.h/2;
+        // textMesh.rotation.z = Math.PI/2;
+
+        textMesh.position.x = position.x;
+        textMesh.position.y = position.y;
+
+        glScene.add( textMesh );
+    });
+
+
+}
+
+
 
 function init() {
 
@@ -512,7 +574,7 @@ function init() {
     floor2011.rotation.x = -Math.PI/2;
     floor2011.position.y = -graphDimensions.h/2;
     floor2011.rotation.z = Math.PI/2;
-    addDot(colorRange[0], trialLocation.vertices);
+    addDot(colorRange[0], trialLocation.vertices, "Points here");
     trialLocation.vertices = [];
 
     var floorGeometry2012 = createGeometry(realData2012);
