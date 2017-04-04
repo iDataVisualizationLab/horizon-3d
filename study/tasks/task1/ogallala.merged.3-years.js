@@ -372,6 +372,8 @@ function createGeometry(dataYear, scale, graphBase) {
             trialLocation.sat = point.sat;
             trialLocation.x = floorGeometry.vertices[i].x;
             trialLocation.y = floorGeometry.vertices[i].y;
+            trialLocation.z = scale*point.sat;
+
             trialLocation.vertices.push(new THREE.Vector3(floorGeometry.vertices[i].x, floorGeometry.vertices[i].y, scale*point.sat))
         }
 
@@ -422,7 +424,7 @@ function addDot(myColor, vertices, text) {
     for(var i=0; i< trialLocation.vertices.length; i ++) {
         dotGeometry.vertices.push(vertices[i]);
     }
-    var dotMaterial = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false, color: myColor } );
+    var dotMaterial = new THREE.PointCloudMaterial( { size: 8, sizeAttenuation: false, color: myColor } );
     var dot = new THREE.Points( dotGeometry, dotMaterial );
     dot.rotation.x = -Math.PI/2;
     dot.position.y = -graphDimensions.h/2;
@@ -433,7 +435,8 @@ function addDot(myColor, vertices, text) {
     if (!!text) {
         var location = {
             x: trialLocation.x,
-            y: trialLocation.y
+            y: trialLocation.y,
+            z: trialLocation.z
         };
 
         addText(location, text)
@@ -474,13 +477,18 @@ function addText(position, myText) {
         textGeo.computeBoundingBox();
         textGeo.computeVertexNormals();
 
+        // textGeo.position.x = position.x;
+        // textGeo.position.y = position.y;
+        // textGeo.position.z = position.z;
+
         var textMesh = new THREE.Mesh(textGeo, textMatterial);
         // textMesh.rotation.x = -Math.PI/2;
-        textMesh.position.y = -graphDimensions.h/2;
+        // textMesh.position.y = -graphDimensions.h/2;
         // textMesh.rotation.z = Math.PI/2;
 
-        textMesh.position.x = position.x;
-        textMesh.position.y = position.y;
+        // textMesh.position.x = position.x;
+        // textMesh.position.y = position.y;
+        // textMesh.position.z = position.z;
 
         glScene.add( textMesh );
     });
@@ -501,7 +509,7 @@ function init() {
     var vFOVRadians = 2 * Math.atan( windowHeight / ( 2 * 1500 ) ),
         //fov = vFOVRadians * 180 / Math.PI;
         fov = 40;
-    startPosition = new THREE.Vector3( 0, 0, 6000 );
+    startPosition = new THREE.Vector3( 0, 1000, 2500 );
     camera = new THREE.PerspectiveCamera( fov, windowWidth / windowHeight, 1, 30000 );
     camera.position.set( startPosition.x, startPosition.y, startPosition.z );
 
@@ -574,7 +582,8 @@ function init() {
     floor2011.rotation.x = -Math.PI/2;
     floor2011.position.y = -graphDimensions.h/2;
     floor2011.rotation.z = Math.PI/2;
-    addDot(colorRange[0], trialLocation.vertices, "Points here");
+    // addDot(colorRange[0], trialLocation.vertices);
+    addDot('#000000', trialLocation.vertices);
     trialLocation.vertices = [];
 
     var floorGeometry2012 = createGeometry(realData2012);
@@ -582,7 +591,7 @@ function init() {
     floor2012.rotation.x = -Math.PI/2;
     floor2012.position.y = -graphDimensions.h/2;
     floor2012.rotation.z = Math.PI/2;
-    addDot(colorRange[1], trialLocation.vertices);
+    addDot('#FF0000', trialLocation.vertices);
     trialLocation.vertices = [];
 
     var floorGeometry2013 = createGeometry(realData2013);
@@ -590,7 +599,7 @@ function init() {
     floor2013.rotation.x = -Math.PI/2;
     floor2013.position.y = -graphDimensions.h/2;
     floor2013.rotation.z = Math.PI/2;
-    addDot(colorRange[2], trialLocation.vertices);
+    addDot('#00FF00', trialLocation.vertices);
     trialLocation.vertices = [];
 
     var group = new THREE.Object3D();

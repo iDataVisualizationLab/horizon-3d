@@ -1,4 +1,12 @@
 var graphTypes = ['merged', 'multiple', 'horizon'];
+// level 200
+// 12x255; 45x43; 79x108; 55x236
+
+// level 600
+// 115x50; 112x50, 118x57
+
+// level above 600
+// 60x72, 54x59, 57x56
 var locations = [
     {
         lat: 12,
