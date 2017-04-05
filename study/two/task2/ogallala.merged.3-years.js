@@ -5,9 +5,19 @@ if ( ! Detector.webgl ) {
 
 var url = window.location.href;
 var maxYear = {value: -9999, year: null};
+var trialLocations = [
+    {
+        lat: +getParameterByName("lat1", url),
+        lon: +getParameterByName("lon1", url)
+    },
+    {
+        lat: +getParameterByName("lat2", url),
+        lon: +getParameterByName("lon2", url)
+    }
+];
+
 var trialLocation = {};
-trialLocation.lat = +getParameterByName("lat", url);
-trialLocation.lon =  +getParameterByName("lon", url);
+
 
 var container, stats;
 
@@ -577,6 +587,7 @@ function init() {
         color: 0x000000
     });
 
+    trialLocation = trialLocations[0];
     var floorGeometry2011 = createGeometry(realData2011);
     var floor2011 = new THREE.Mesh(floorGeometry2011, material2011);
     floor2011.rotation.x = -Math.PI/2;
@@ -584,7 +595,6 @@ function init() {
     floor2011.rotation.z = Math.PI/2;
     // addDot(colorRange[0], trialLocation.vertices);
     addDot('#000000', trialLocation.vertices);
-    trialLocation.vertices = [];
     maxYear.value = trialLocation.sat;
     maxYear.year = 2011;
     // var floorGeometry2012 = createGeometry(realData2012);
@@ -601,6 +611,7 @@ function init() {
     // addDot('#FF0000', trialLocation.vertices);
     // trialLocation.vertices = [];
 
+    trialLocation = trialLocations[1];
     var floorGeometry2013 = createGeometry(realData2013);
     var floor2013 = new THREE.Mesh(floorGeometry2013, material2013);
     if (trialLocation.sat > maxYear.value) {

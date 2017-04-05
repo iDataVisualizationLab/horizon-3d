@@ -6,39 +6,43 @@ var graphTypes = ['merged', 'multiple', 'horizon'];
 // level above 600
 // 60x72, 54x59, 57x56
 var locations = [
-    {
+    [
+        {
         lat: 57,
         lon: 56,
         sat: null
+        },
+        {
+            lat: 12,
+            lon: 255,
+            sat: null
+        }
+    ],
+    [
+        {
+            lat: 60,
+            lon: 72,
+            sat: null
+        },
 
-    },
-    {
-        lat: 12,
-        lon: 255,
-        sat: null
-    },
-
-    {
-        lat: 60,
-        lon: 72,
-        sat: null
-    },
-
-    {
-        lat: 118,
-        lon: 57,
-        sat: null
-    },
-    {
-        lat: 45,
-        lon: 53,
-        sat: null
-    },
-    {
-        lat: 55,
-        lon: 236,
-        sat: null
-    }
+        {
+            lat: 118,
+            lon: 57,
+            sat: null
+        }
+    ],
+    [
+        {
+            lat: 45,
+            lon: 53,
+            sat: null
+        },
+        {
+            lat: 55,
+            lon: 236,
+            sat: null
+        }
+    ]
 ];
 
 var startTime = (new Date()).getTime();
@@ -47,9 +51,9 @@ var trialLocationIndex = (locations.length -1) * Math.round(Math.random());
 var trialLocation = locations[trialLocationIndex];
 
 var graphTypeToFile = {
-    merged: 'task2/ogallala.merged.3-years.html?lat=' + trialLocation.lat + '&lon=' + trialLocation.lon ,
-    multiple: 'task2/ogallala.small.multiple.html?lat=' + trialLocation.lat + '&lon=' + trialLocation.lon ,
-    horizon: 'task2/ogallala.horizon.single.surface.html?lat=' + trialLocation.lat + '&lon=' + trialLocation.lon
+    merged: 'task2/ogallala.merged.3-years.html?lat1=' + trialLocation[0].lat + '&lon1=' + trialLocation[0].lon + '&lat2=' + trialLocation[1].lat + '&lon2=' + trialLocation[1].lon,
+    multiple: 'task2/ogallala.small.multiple.html?lat1=' + trialLocation[0].lat + '&lon1=' + trialLocation[0].lon + '&lat2=' + trialLocation[1].lat + '&lon2=' + trialLocation[1].lon,
+    horizon: 'task2/ogallala.horizon.single.surface.html?lat1=' + trialLocation[0].lat + '&lon1=' + trialLocation[0].lon + '&lat2=' + trialLocation[1].lat + '&lon2=' + trialLocation[1].lon
 };
 
 var currentQuestionIndex = -1;
@@ -83,8 +87,6 @@ function nextGraphType() {
     graphType = graphTypes[currentGraphTypeIndex];
 
     startTime = (new Date()).getTime();
-
-
 }
 
 function displayGraphType(graphType) {
