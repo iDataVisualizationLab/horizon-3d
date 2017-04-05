@@ -93,6 +93,9 @@ function displayGraphType(graphType) {
         return;
     }
 
+    d3.select("#graphType")
+        .text("Graph type: " + graphType);
+
     var file = graphTypeToFile[graphType];
     var iframe = document.getElementById('graph');
     var src = iframe.getAttribute('src');

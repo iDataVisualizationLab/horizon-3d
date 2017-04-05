@@ -583,7 +583,7 @@ function init() {
     floor2011.position.y = -graphDimensions.h/2;
     floor2011.rotation.z = Math.PI/2;
     // addDot(colorRange[0], trialLocation.vertices);
-    addDot('#000000', trialLocation.vertices);
+    addDot('#FFFF00', trialLocation.vertices);
     maxYear.value = trialLocation.sat;
     maxYear.year = 2010;
     maxYear.y1 = 2010;
