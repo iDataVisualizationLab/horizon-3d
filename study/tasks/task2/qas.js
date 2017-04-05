@@ -36,7 +36,7 @@ var questionsAndAnswers =  [
                 },
                 {
                     key: "2010",
-                    text:  "Year 2010 (yellow black)",
+                    text:  "Year 2010 (black line)",
                     color: colorRange[0]
 
                 }
