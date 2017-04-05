@@ -51,7 +51,7 @@ app.get('/', function (req, res) {
         questionKey: null,
         correct: false,
         duration: null,
-        query: req.query
+        query: req.url
     };
 
     var query = req.query;
