@@ -49,13 +49,13 @@ var data = {
     }
 };
 
-d3.csv("../data/ascii_2011all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
+d3.csv("../data/ascii_2010all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
     realData2011 = data2011;
 
-    d3.csv("../data/ascii_2012all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
+    d3.csv("../data/ascii_2014all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
         realData2012 = data2012;
 
-        d3.csv("../data/ascii_2013all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
+        d3.csv("../data/ascii_2016all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
             realData2013 = data2013;
 
             init();
@@ -586,7 +586,7 @@ function init() {
     addDot('#000000', trialLocation.vertices);
     trialLocation.vertices = [];
     maxYear.value = trialLocation.sat;
-    maxYear.year = 2011;
+    maxYear.year = 2010;
     var floorGeometry2012 = createGeometry(realData2012);
     var floor2012 = new THREE.Mesh(floorGeometry2012, redMaterial);
     floor2012.rotation.x = -Math.PI/2;
@@ -595,7 +595,7 @@ function init() {
 
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
-        maxYear.year = 2012;
+        maxYear.year = 2014;
     }
 
     addDot('#FF0000', trialLocation.vertices);
@@ -605,7 +605,7 @@ function init() {
     var floor2013 = new THREE.Mesh(floorGeometry2013, material2013);
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
-        maxYear.year = 2013;
+        maxYear.year = 2016;
     }
 
     floor2013.rotation.x = -Math.PI/2;
