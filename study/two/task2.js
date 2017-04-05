@@ -123,9 +123,9 @@ function displayQuestion() {
 
     d3.select("#answer").selectAll('span')
         .data(questionAnswer.answer).enter()
-        .append('span')
+        .append('div')
         .html(function (d) {
-            return '<input type="radio" name="answer" value="' + d.key  + '"/> ' + d.text + '<br/>';
+            return '<input type="radio" name="answer" value="' + d.key  + '"/> <span style="color:' + d.color + '">'+ d.text + '</span><br/>';
         });
 
 
