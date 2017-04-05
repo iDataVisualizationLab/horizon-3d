@@ -60,6 +60,8 @@ function fireLogging(graphType) {
     var win = iframe.contentWindow;
     var correct = win.maxYear.year == a;
 
+    debugger;
+
     var httpGetAsync = function httpGetAsync(theUrl, callback)
     {
         var xmlHttp = new XMLHttpRequest();
@@ -78,8 +80,27 @@ function fireLogging(graphType) {
 
     var endTime = (new Date()).getTime();
     var dur = endTime - startTime;
-    var myUrl = httpURLBase + '?user=' + userId + '&graphType=' + graphType + '&task=Task2&questionKey=' + questionAnswer.question.key + '&correct=' + correct + '&duration=' + dur;
+    var maxStr = convertMaxYeartoQueryString(win.maxYear);
+    var myUrl = httpURLBase + '?user=' + userId + '&graphType=' + graphType + '&task=Task1&questionKey=' + questionAnswer.question.key + '&correct=' + correct + '&duration=' + dur + "&selected" + a + maxStr;
     httpGetAsync(myUrl);
     console.log(questionAnswer);
     console.log(a);
+}
+
+function convertMaxYeartoQueryString(maxYear) {
+    var str = '';
+    var val;
+    var yr;
+    for (i=1; i<= 10; i++) {
+        val =  "v" + i;
+        yr = "y" + i;
+        if (!maxYear.hasOwnProperty(val) || !maxYear.hasOwnProperty(yr)) {
+            console.log("Error, not found year " + yr + "; val:" + val);
+            break;
+        }
+        str += '&' + val + "=" + maxYear[val] + "&" + yr + "=" + maxYear[yr]
+    }
+
+
+    return str;
 }
