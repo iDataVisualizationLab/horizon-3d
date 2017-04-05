@@ -71,13 +71,13 @@ var data = {
     }
 };
 
-d3.csv("../data/ascii_2011all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
+d3.csv("../data/ascii_2010all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
     realData2011 = data2011;
 
     d3.csv("../data/ascii_2012all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
         realData2012 = data2012;
 
-        d3.csv("../data/ascii_2013all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
+        d3.csv("../data/ascii_2016all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
             realData2013 = data2013;
 
             init();
@@ -537,7 +537,7 @@ function init() {
     floor2011.rotation.x = -Math.PI/2;
     floor2011.position.y = -graphDimensions.h/2;
     floor2011.rotation.z = Math.PI/2;
-    addDot('#000000', trialLocation.vertices);
+    addDot('#FF0000', trialLocation.vertices);
     maxYear.value = trialLocation.sat;
     maxYear.year = 2010;
 

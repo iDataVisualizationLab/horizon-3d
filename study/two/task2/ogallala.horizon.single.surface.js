@@ -6,9 +6,16 @@ if ( ! Detector.webgl ) {
 
 var url = window.location.href;
 var maxYear = {value: -9999, year: null};
-var trialLocation = {};
-trialLocation.lat = +getParameterByName("lat", url);
-trialLocation.lon =  +getParameterByName("lon", url);
+var trialLocations = [
+    {
+        lat: +getParameterByName("lat1", url),
+        lon: +getParameterByName("lon1", url)
+    },
+    {
+        lat: +getParameterByName("lat2", url),
+        lon: +getParameterByName("lon2", url)
+    }
+];
 
 function getParameterByName(name, url) {
     if (!url) {
@@ -21,6 +28,9 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
+
+var trialLocation = {};
 
 
 var container, stats;
@@ -80,13 +90,13 @@ var data = {
     }
 };
 
-d3.csv("../data/ascii_2011all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
+d3.csv("../data/ascii_2010all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
     realData2011 = data2011;
 
     d3.csv("../data/ascii_2012all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
         realData2012 = data2012;
 
-        d3.csv("../data/ascii_2013all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
+        d3.csv("../data/ascii_2016all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
             realData2013 = data2013;
 
             init();
@@ -601,23 +611,20 @@ function init() {
 
 
     var lines = [];
+    trialLocation = trialLocations[0];
     var meshes = createMeshes([], realData2011, 1, 0, lines);
-    addDot('#000000', trialLocation.vertices);
+    addDot('#FF0000', trialLocation.vertices);
     maxYear.value = trialLocation.sat;
-    maxYear.year = 2011;
+    maxYear.year = 2010;
 
-    // meshes = createMeshes(meshes, realData2012, 1, 400, lines);
-    // addDot('#FF0000', trialLocation.vertices);
-    // if (trialLocation.sat > maxYear.value) {
-    //     maxYear.value = trialLocation.sat;
-    //     maxYear.year = 2012;
-    // }
 
+
+    trialLocation = trialLocations[1];
     meshes = createMeshes(meshes, realData2013, 1, 800, lines);
     addDot('#00FF00', trialLocation.vertices);
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
-        maxYear.year = 2013;
+        maxYear.year = 2016;
     }
 
     var group = new THREE.Object3D();
