@@ -74,7 +74,7 @@ var data = {
 d3.csv("../data/ascii_2010all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
     realData2011 = data2011;
 
-    d3.csv("../data/ascii_2012all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
+    d3.csv("../data/ascii_2014all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
         realData2012 = data2012;
 
         d3.csv("../data/ascii_2016all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
@@ -537,10 +537,25 @@ function init() {
     floor2011.rotation.x = -Math.PI/2;
     floor2011.position.y = -graphDimensions.h/2;
     floor2011.rotation.z = Math.PI/2;
-    addDot('#FF0000', trialLocation.vertices);
+    addDot('#000000', trialLocation.vertices);
     maxYear.value = trialLocation.sat;
     maxYear.year = 2010;
+    maxYear.y1 = 2010;
+    maxYear.v1 = trialLocation.sat;
 
+    var floorGeometry2012 = createGeometry(realData2012);
+    var floor2012 = new THREE.Mesh(floorGeometry2012, redMaterial);
+    floor2012.rotation.x = -Math.PI/2;
+    floor2012.position.y = -graphDimensions.h/2;
+    floor2012.rotation.z = Math.PI/2;
+
+    if (trialLocation.sat > maxYear.value) {
+        maxYear.value = trialLocation.sat;
+        maxYear.year = 2014;
+    }
+    maxYear.y2 = 2014;
+    maxYear.v2 = trialLocation.sat;
+    addDot('#FF0000', trialLocation.vertices);
 
     trialLocation = trialLocations[1];
     var floorGeometry2013 = createGeometry(realData2013, 0.33, 800);
@@ -554,6 +569,8 @@ function init() {
         maxYear.value = trialLocation.sat;
         maxYear.year = 2016;
     }
+    maxYear.y3 = 2016;
+    maxYear.v3 = trialLocation.sat;
 
     var group = new THREE.Object3D();
     group.add(floor2011);

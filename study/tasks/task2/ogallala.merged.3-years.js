@@ -75,7 +75,7 @@ var data = {
 d3.csv("../data/ascii_2010all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
     realData2011 = data2011;
 
-    d3.csv("../data/ascii_2012all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
+    d3.csv("../data/ascii_2014all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
         realData2012 = data2012;
 
         d3.csv("../data/ascii_2016all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
@@ -567,15 +567,20 @@ function init() {
     var cTen = d3.scale.category10();
     var colorRange = cTen.range();
 
-    var material2011 = new THREE.MeshBasicMaterial( {
+    var material2010 = new THREE.MeshBasicMaterial( {
         side:THREE.DoubleSide,
         color: colorRange[0]
     });
 
 
-    var material2013 = new THREE.MeshBasicMaterial( {
+    var material2014 = new THREE.MeshBasicMaterial( {
         side:THREE.DoubleSide,
         color: colorRange[1]
+    });
+
+    var material2016 = new THREE.MeshBasicMaterial( {
+        side:THREE.DoubleSide,
+        color: colorRange[2]
     });
 
     var lineMat = new THREE.LineBasicMaterial({
@@ -587,35 +592,43 @@ function init() {
 
     trialLocation = trialLocations[0];
     var floorGeometry2011 = createGeometry(realData2011);
-    var floor2011 = new THREE.Mesh(floorGeometry2011, material2011);
+    var floor2011 = new THREE.Mesh(floorGeometry2011, material2010);
     floor2011.rotation.x = -Math.PI/2;
     floor2011.position.y = -graphDimensions.h/2;
     floor2011.rotation.z = Math.PI/2;
-    // addDot(colorRange[0], trialLocation.vertices);
-    addDot('#FF0000', trialLocation.vertices);
+    addDot('#000000', trialLocation.vertices);
     maxYear.value = trialLocation.sat;
     maxYear.year = 2010;
-    // var floorGeometry2012 = createGeometry(realData2012);
-    // var floor2012 = new THREE.Mesh(floorGeometry2012, redMaterial);
-    // floor2012.rotation.x = -Math.PI/2;
-    // floor2012.position.y = -graphDimensions.h/2;
-    // floor2012.rotation.z = Math.PI/2;
-    //
-    // if (trialLocation.sat > maxYear.value) {
-    //     maxYear.value = trialLocation.sat;
-    //     maxYear.year = 2012;
-    // }
-    //
-    // addDot('#FF0000', trialLocation.vertices);
-    // trialLocation.vertices = [];
+    maxYear.y1 = 2010;
+    maxYear.v1 = trialLocation.sat;
+
+
+
+    var floorGeometry2012 = createGeometry(realData2012);
+    var floor2012 = new THREE.Mesh(floorGeometry2012, redMaterial);
+    floor2012.rotation.x = -Math.PI/2;
+    floor2012.position.y = -graphDimensions.h/2;
+    floor2012.rotation.z = Math.PI/2;
+
+    if (trialLocation.sat > maxYear.value) {
+        maxYear.value = trialLocation.sat;
+        maxYear.year = 2014;
+    }
+    maxYear.y2 = 2014;
+    maxYear.v2 = trialLocation.sat;
+
+    addDot('#FF0000', trialLocation.vertices);
+    trialLocation.vertices = [];
 
     trialLocation = trialLocations[1];
     var floorGeometry2013 = createGeometry(realData2013);
-    var floor2013 = new THREE.Mesh(floorGeometry2013, material2013);
+    var floor2013 = new THREE.Mesh(floorGeometry2013, material2016);
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
         maxYear.year = 2016;
     }
+    maxYear.y3 = 2016;
+    maxYear.v3 = trialLocation.sat;
 
     floor2013.rotation.x = -Math.PI/2;
     floor2013.position.y = -graphDimensions.h/2;
