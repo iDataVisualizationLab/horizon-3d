@@ -14,6 +14,10 @@ var trialLocations = [
     {
         lat: +getParameterByName("lat2", url),
         lon: +getParameterByName("lon2", url)
+    },
+    {
+        lat: +getParameterByName("lat3", url),
+        lon: +getParameterByName("lon3", url)
     }
 ];
 
@@ -613,13 +617,20 @@ function init() {
     var lines = [];
     trialLocation = trialLocations[0];
     var meshes = createMeshes([], realData2011, 1, 0, lines);
-    addDot('#FF0000', trialLocation.vertices);
+    addDot('#FFFF00', trialLocation.vertices);
     maxYear.value = trialLocation.sat;
     maxYear.year = 2010;
 
 
-
     trialLocation = trialLocations[1];
+    meshes = createMeshes(meshes, realData2012, 1, 800, lines);
+    addDot('#FF0000', trialLocation.vertices);
+    if (trialLocation.sat > maxYear.value) {
+        maxYear.value = trialLocation.sat;
+        maxYear.year = 2016;
+    }
+
+    trialLocation = trialLocations[2];
     meshes = createMeshes(meshes, realData2013, 1, 800, lines);
     addDot('#00FF00', trialLocation.vertices);
     if (trialLocation.sat > maxYear.value) {

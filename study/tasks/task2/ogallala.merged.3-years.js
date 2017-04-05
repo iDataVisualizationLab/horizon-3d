@@ -596,7 +596,7 @@ function init() {
     floor2011.rotation.x = -Math.PI/2;
     floor2011.position.y = -graphDimensions.h/2;
     floor2011.rotation.z = Math.PI/2;
-    addDot('#000000', trialLocation.vertices);
+    addDot('#FFFF00', trialLocation.vertices);
     maxYear.value = trialLocation.sat;
     maxYear.year = 2010;
     maxYear.y1 = 2010;
@@ -605,7 +605,7 @@ function init() {
 
 
     var floorGeometry2012 = createGeometry(realData2012);
-    var floor2012 = new THREE.Mesh(floorGeometry2012, redMaterial);
+    var floor2012 = new THREE.Mesh(floorGeometry2012, material2014);
     floor2012.rotation.x = -Math.PI/2;
     floor2012.position.y = -graphDimensions.h/2;
     floor2012.rotation.z = Math.PI/2;
@@ -638,7 +638,7 @@ function init() {
 
     var group = new THREE.Object3D();
     group.add(floor2011);
-    // group.add(floor2012);
+    group.add(floor2012);
     group.add(floor2013);
 
 

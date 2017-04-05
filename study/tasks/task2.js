@@ -16,6 +16,11 @@ var locations = [
             lat: 12,
             lon: 255,
             sat: null
+        },
+        {
+            lat: 55,
+            lon: 236,
+            sat: null
         }
     ],
     [
@@ -24,22 +29,14 @@ var locations = [
             lon: 72,
             sat: null
         },
-
         {
             lat: 118,
             lon: 57,
             sat: null
-        }
-    ],
-    [
+        },
         {
             lat: 45,
             lon: 53,
-            sat: null
-        },
-        {
-            lat: 55,
-            lon: 236,
             sat: null
         }
     ]
@@ -55,10 +52,11 @@ function nextLocations() {
     trialLocation = locations[trialLocationIndex];
 }
 
+var queryParamUrl = 'lat1=' + trialLocation[0].lat + '&lon1=' + trialLocation[0].lon + '&lat2=' + trialLocation[1].lat + '&lon2=' + trialLocation[1].lon + '&lat3=' + trialLocation[2].lat + '&lon3=' + trialLocation[2].lon;
 var graphTypeToFile = {
-    merged: 'task2/ogallala.merged.3-years.html?lat1=' + trialLocation[0].lat + '&lon1=' + trialLocation[0].lon + '&lat2=' + trialLocation[1].lat + '&lon2=' + trialLocation[1].lon,
-    multiple: 'task2/ogallala.small.multiple.html?lat1=' + trialLocation[0].lat + '&lon1=' + trialLocation[0].lon + '&lat2=' + trialLocation[1].lat + '&lon2=' + trialLocation[1].lon,
-    horizon: 'task2/ogallala.horizon.single.surface.html?lat1=' + trialLocation[0].lat + '&lon1=' + trialLocation[0].lon + '&lat2=' + trialLocation[1].lat + '&lon2=' + trialLocation[1].lon
+    merged: 'task2/ogallala.merged.3-years.html?' + queryParamUrl,
+    multiple: 'task2/ogallala.small.multiple.html?' + queryParamUrl,
+    horizon: 'task2/ogallala.horizon.single.surface.html?' + queryParamUrl
 };
 
 var currentQuestionIndex = -1;
@@ -91,12 +89,12 @@ function nextGraphType() {
 
     nextLocations();
 
+    queryParamUrl = 'lat1=' + trialLocation[0].lat + '&lon1=' + trialLocation[0].lon + '&lat2=' + trialLocation[1].lat + '&lon2=' + trialLocation[1].lon + '&lat3=' + trialLocation[2].lat + '&lon3=' + trialLocation[2].lon;
     graphTypeToFile = {
-        merged: 'task2/ogallala.merged.3-years.html?lat1=' + trialLocation[0].lat + '&lon1=' + trialLocation[0].lon + '&lat2=' + trialLocation[1].lat + '&lon2=' + trialLocation[1].lon,
-        multiple: 'task2/ogallala.small.multiple.html?lat1=' + trialLocation[0].lat + '&lon1=' + trialLocation[0].lon + '&lat2=' + trialLocation[1].lat + '&lon2=' + trialLocation[1].lon,
-        horizon: 'task2/ogallala.horizon.single.surface.html?lat1=' + trialLocation[0].lat + '&lon1=' + trialLocation[0].lon + '&lat2=' + trialLocation[1].lat + '&lon2=' + trialLocation[1].lon
+        merged: 'task2/ogallala.merged.3-years.html?' + queryParamUrl,
+        multiple: 'task2/ogallala.small.multiple.html?' + queryParamUrl,
+        horizon: 'task2/ogallala.horizon.single.surface.html?' + queryParamUrl
     };
-
 
     currentGraphTypeIndex = currentGraphTypeIndex % graphTypes.length;
     graphType = graphTypes[currentGraphTypeIndex];

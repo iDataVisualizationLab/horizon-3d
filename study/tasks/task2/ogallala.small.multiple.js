@@ -13,6 +13,10 @@ var trialLocations = [
     {
         lat: +getParameterByName("lat2", url),
         lon: +getParameterByName("lon2", url)
+    },
+    {
+        lat: +getParameterByName("lat3", url),
+        lon: +getParameterByName("lon3", url)
     }
 ];
 
@@ -537,14 +541,15 @@ function init() {
     floor2011.rotation.x = -Math.PI/2;
     floor2011.position.y = -graphDimensions.h/2;
     floor2011.rotation.z = Math.PI/2;
-    addDot('#000000', trialLocation.vertices);
+    addDot('#FFFF00', trialLocation.vertices);
     maxYear.value = trialLocation.sat;
     maxYear.year = 2010;
     maxYear.y1 = 2010;
     maxYear.v1 = trialLocation.sat;
 
-    var floorGeometry2012 = createGeometry(realData2012);
-    var floor2012 = new THREE.Mesh(floorGeometry2012, redMaterial);
+    trialLocation = trialLocations[1];
+    var floorGeometry2012 = createGeometry(realData2012, 0.33, 400);
+    var floor2012 = new THREE.Mesh(floorGeometry2012, wireframeMaterial);
     floor2012.rotation.x = -Math.PI/2;
     floor2012.position.y = -graphDimensions.h/2;
     floor2012.rotation.z = Math.PI/2;
@@ -557,7 +562,7 @@ function init() {
     maxYear.v2 = trialLocation.sat;
     addDot('#FF0000', trialLocation.vertices);
 
-    trialLocation = trialLocations[1];
+    trialLocation = trialLocations[2];
     var floorGeometry2013 = createGeometry(realData2013, 0.33, 800);
     var floor2013 = new THREE.Mesh(floorGeometry2013, wireframeMaterial);
     floor2013.rotation.x = -Math.PI/2;
@@ -574,6 +579,7 @@ function init() {
 
     var group = new THREE.Object3D();
     group.add(floor2011);
+    group.add(floor2012);
     group.add(floor2013);
 
 

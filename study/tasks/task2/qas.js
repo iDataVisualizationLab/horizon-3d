@@ -23,7 +23,7 @@ var questionsAndAnswers =  [
             answer: [
                 {
                     key: "2010",
-                    text:  "Year 2010 (black dot)",
+                    text:  "Year 2010 (yellow dot)",
                     color: colorRange[0]
 
                 }
@@ -64,7 +64,6 @@ function fireLogging(graphType) {
     var win = iframe.contentWindow;
     var correct = win.maxYear.year == a;
 
-    debugger;
 
     var httpGetAsync = function httpGetAsync(theUrl, callback)
     {
