@@ -71,7 +71,9 @@ function fireLogging(graphType) {
         xmlHttp.send(null);
     };
 
-    var myUrl = httpURLBase + '?user=' + userId + '&graphType=' + graphType + '&task=Task1&questionKey=' + questionAnswer.question.key + '&correct=' + correct + '&duration=20';
+    var endTime = (new Date()).getTime();
+    var dur = endTime - startTime;
+    var myUrl = httpURLBase + '?user=' + userId + '&graphType=' + graphType + '&task=Task1&questionKey=' + questionAnswer.question.key + '&correct=' + correct + '&duration=' + dur;
     httpGetAsync(myUrl);
     console.log(questionAnswer);
     console.log(a);

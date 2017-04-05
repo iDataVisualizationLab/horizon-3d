@@ -41,6 +41,8 @@ var locations = [
     }
 ];
 
+var startTime = (new Date()).getTime();
+
 var trialLocationIndex = (locations.length -1) * Math.round(Math.random());
 var trialLocation = locations[trialLocationIndex];
 
@@ -79,6 +81,8 @@ function nextGraphType() {
 
     currentGraphTypeIndex = currentGraphTypeIndex % graphTypes.length;
     graphType = graphTypes[currentGraphTypeIndex];
+
+    startTime = (new Date()).getTime();
 
 
 }
