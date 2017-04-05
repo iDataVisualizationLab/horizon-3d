@@ -4,7 +4,7 @@ if ( ! Detector.webgl ) {
 }
 
 var url = window.location.href;
-
+var maxYear = {value: -9999, year: null};
 var trialLocation = {};
 trialLocation.lat = +getParameterByName("lat", url);
 trialLocation.lon =  +getParameterByName("lon", url);
@@ -585,17 +585,29 @@ function init() {
     // addDot(colorRange[0], trialLocation.vertices);
     addDot('#000000', trialLocation.vertices);
     trialLocation.vertices = [];
-
+    maxYear.value = trialLocation.sat;
+    maxYear.year = 2011;
     var floorGeometry2012 = createGeometry(realData2012);
     var floor2012 = new THREE.Mesh(floorGeometry2012, redMaterial);
     floor2012.rotation.x = -Math.PI/2;
     floor2012.position.y = -graphDimensions.h/2;
     floor2012.rotation.z = Math.PI/2;
+
+    if (trialLocation.sat > maxYear.value) {
+        maxYear.value = trialLocation.sat;
+        maxYear.year = 2012;
+    }
+
     addDot('#FF0000', trialLocation.vertices);
     trialLocation.vertices = [];
 
     var floorGeometry2013 = createGeometry(realData2013);
     var floor2013 = new THREE.Mesh(floorGeometry2013, material2013);
+    if (trialLocation.sat > maxYear.value) {
+        maxYear.value = trialLocation.sat;
+        maxYear.year = 2013;
+    }
+
     floor2013.rotation.x = -Math.PI/2;
     floor2013.position.y = -graphDimensions.h/2;
     floor2013.rotation.z = Math.PI/2;
