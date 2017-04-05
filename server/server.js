@@ -18,6 +18,19 @@ app.post('/', function (req, res) {
     res.send('Hello World!')
 });
 
+function getParameterByName(name, url) {
+    if (!url) {
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+
 app.get('/', function (req, res) {
 
     var buf = new Buffer([
@@ -37,7 +50,8 @@ app.get('/', function (req, res) {
         task: null,
         questionKey: null,
         correct: false,
-        duration: null
+        duration: null,
+        query: req.query
     };
 
     var query = req.query;
