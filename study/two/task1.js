@@ -123,7 +123,7 @@ function displayQuestion() {
         .data(questionAnswer.answer).enter()
         .append('span')
         .html(function (d) {
-            return '<input type="radio" name="answer" value="' + d.key  + '"/> ' + d.text + '<br/>';
+            return '<input type="radio" name="answer" value="' + d.key  + '"/> <span style="color:' + d.color + '">'+ d.text + '</span><br/>';
         });
 
 

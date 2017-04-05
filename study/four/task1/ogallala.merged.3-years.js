@@ -21,9 +21,10 @@ var mouseX = 0, mouseY = 0;
 var windowWidth =  1200,
     windowHeight = 800;
 
-var realData2011;
+var realData2010;
 var realData2012;
-var realData2013;
+var realData2014;
+var realData2016;
 
 var startPosition;
 
@@ -49,17 +50,21 @@ var data = {
     }
 };
 
-d3.csv("../data/ascii_2011all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
-    realData2011 = data2011;
+d3.csv("../data/ascii_2010all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2010) {
+    realData2010 = data2010;
 
     d3.csv("../data/ascii_2012all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
         realData2012 = data2012;
 
-        d3.csv("../data/ascii_2013all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
-            realData2013 = data2013;
+        d3.csv("../data/ascii_2014all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2014) {
+            realData2014 = data2014;
 
-            init();
-            render();
+            d3.csv("../data/ascii_2016all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2016) {
+                realData2016 = data2016;
+
+                init();
+                render();
+            });
         });
     });
 
@@ -555,19 +560,24 @@ function init() {
     var cTen = d3.scale.category10();
     var colorRange = cTen.range();
 
-    var material2011 = new THREE.MeshBasicMaterial( {
+    var material2010 = new THREE.MeshBasicMaterial( {
         side:THREE.DoubleSide,
         color: colorRange[0]
     });
 
-    var redMaterial = new THREE.MeshBasicMaterial( {
+    var material2012 = new THREE.MeshBasicMaterial( {
         side:THREE.DoubleSide,
         color: colorRange[1]
     });
 
-    var material2013 = new THREE.MeshBasicMaterial( {
+    var material2014 = new THREE.MeshBasicMaterial( {
         side:THREE.DoubleSide,
         color: colorRange[2]
+    });
+
+    var material2016 = new THREE.MeshBasicMaterial( {
+        side:THREE.DoubleSide,
+        color: colorRange[4]
     });
 
     var lineMat = new THREE.LineBasicMaterial({
@@ -577,18 +587,18 @@ function init() {
         color: 0x000000
     });
 
-    var floorGeometry2011 = createGeometry(realData2011);
-    var floor2011 = new THREE.Mesh(floorGeometry2011, material2011);
-    floor2011.rotation.x = -Math.PI/2;
-    floor2011.position.y = -graphDimensions.h/2;
-    floor2011.rotation.z = Math.PI/2;
-    // addDot(colorRange[0], trialLocation.vertices);
+    debugger;
+    var floorGeometry2010 = createGeometry(realData2010);
+    var floor2010 = new THREE.Mesh(floorGeometry2010, material2010);
+    floor2010.rotation.x = -Math.PI/2;
+    floor2010.position.y = -graphDimensions.h/2;
+    floor2010.rotation.z = Math.PI/2;
     addDot('#000000', trialLocation.vertices);
     trialLocation.vertices = [];
     maxYear.value = trialLocation.sat;
-    maxYear.year = 2011;
+    maxYear.year = 2010;
     var floorGeometry2012 = createGeometry(realData2012);
-    var floor2012 = new THREE.Mesh(floorGeometry2012, redMaterial);
+    var floor2012 = new THREE.Mesh(floorGeometry2012, material2012);
     floor2012.rotation.x = -Math.PI/2;
     floor2012.position.y = -graphDimensions.h/2;
     floor2012.rotation.z = Math.PI/2;
@@ -601,23 +611,36 @@ function init() {
     addDot('#FF0000', trialLocation.vertices);
     trialLocation.vertices = [];
 
-    var floorGeometry2013 = createGeometry(realData2013);
-    var floor2013 = new THREE.Mesh(floorGeometry2013, material2013);
+    var floorGeometry2014 = createGeometry(realData2014);
+    var floor2014 = new THREE.Mesh(floorGeometry2014, material2014);
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
-        maxYear.year = 2013;
+        maxYear.year = 2014;
     }
 
-    floor2013.rotation.x = -Math.PI/2;
-    floor2013.position.y = -graphDimensions.h/2;
-    floor2013.rotation.z = Math.PI/2;
+    floor2014.rotation.x = -Math.PI/2;
+    floor2014.position.y = -graphDimensions.h/2;
+    floor2014.rotation.z = Math.PI/2;
     addDot('#00FF00', trialLocation.vertices);
     trialLocation.vertices = [];
 
+    var floorGeometry2016 = createGeometry(realData2016);
+    var floor2016 = new THREE.Mesh(floorGeometry2016, material2016);
+    if (trialLocation.sat > maxYear.value) {
+        maxYear.value = trialLocation.sat;
+        maxYear.year = 2016;
+    }
+    floor2016.rotation.x = -Math.PI/2;
+    floor2016.position.y = -graphDimensions.h/2;
+    floor2016.rotation.z = Math.PI/2;
+    addDot('#0000FF', trialLocation.vertices);
+
+
     var group = new THREE.Object3D();
-    group.add(floor2011);
+    group.add(floor2010);
     group.add(floor2012);
-    group.add(floor2013);
+    group.add(floor2014);
+    group.add(floor2016);
 
 
     // //grid lines

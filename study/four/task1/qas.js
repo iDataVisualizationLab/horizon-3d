@@ -11,6 +11,10 @@ function guid() {
 
 var httpURLBase = 'http://localhost:3000';
 var userId = guid();
+
+var cTen = d3.scale.category10();
+var colorRange = cTen.range();
+
 var questionsAndAnswers =  [
         {
             question: {
@@ -19,18 +23,29 @@ var questionsAndAnswers =  [
             },
             answer: [
                 {
-                    key: "2011",
-                    text:  "Year 2011 (black dot)"
+                    key: "2010",
+                    text:  "Year 2010 (black dot)",
+                    color: colorRange[0]
                 }
                 ,
                 {
                     key: "2012",
-                    text:  "Year 2012 (red dot)"
+                    text:  "Year 2012 (red dot)",
+                    color: colorRange[1]
+
                 }
                 ,
                 {
-                    key: "2013",
-                    text:  "Year 2013 (green dot)"
+                    key: "2014",
+                    text:  "Year 2014 (green dot)",
+                    color: colorRange[2]
+
+                },
+                {
+                    key: "2015",
+                    text:  "Year 2016 (blue dot)",
+                    color: colorRange[4]
+
                 }
             ]
         }

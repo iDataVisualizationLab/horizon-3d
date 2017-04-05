@@ -11,7 +11,7 @@ var convertToJsonArray = function () {
 
     var rowIndex = 0;
 
-    var inputFile = 'ascii_2012all.optimized-2-2.optimized-2-2';
+    var inputFile = 'ascii_2016all.optimized-2-2.optimized-2-2';
     var outputFile = inputFile + '.converted.csv';
 
     var writer = csvWriter();
