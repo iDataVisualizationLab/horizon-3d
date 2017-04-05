@@ -4,6 +4,25 @@ if ( ! Detector.webgl ) {
 }
 
 
+var url = window.location.href;
+var maxYear = {value: -9999, year: null};
+var trialLocation = {};
+trialLocation.lat = +getParameterByName("lat", url);
+trialLocation.lon =  +getParameterByName("lon", url);
+
+function getParameterByName(name, url) {
+    if (!url) {
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+
 var container, stats;
 
 var views, glScene, glRenderer, camera, cssrenderer;
@@ -368,6 +387,11 @@ function createMeshes(meshes, dataYear, scale, graphOffset, lines) {
 
     var tmpLines = {};
 
+    trialLocation.sat = null;
+    trialLocation.x = null;
+    trialLocation.y = null;
+    trialLocation.vertices = [];
+
     for (var i =0; i< floorGeometry.vertices.length; i++){
 
         //push colors to the faceColors array
@@ -375,6 +399,7 @@ function createMeshes(meshes, dataYear, scale, graphOffset, lines) {
         point.lat = +point.lat;
         point.lon = +point.lon;
         point.sat = +point.sat;
+
 
         //push colors to the faceColors array
 
@@ -386,6 +411,15 @@ function createMeshes(meshes, dataYear, scale, graphOffset, lines) {
         faceColors.push(getColor(myHeight)); // one vertex on color, depending current data value
 
         thresholdObject = getThresholdObject(myHeight);
+
+        if (point.lat == trialLocation.lat && point.lon == trialLocation.lon) {
+            trialLocation.sat = point.sat;
+            trialLocation.x = floorGeometry.vertices[i].x;
+            trialLocation.y = floorGeometry.vertices[i].y;
+            trialLocation.z = scale*point.sat;
+
+            trialLocation.vertices.push(new THREE.Vector3(floorGeometry.vertices[i].x, floorGeometry.vertices[i].y, graphOffset + scale * (point.sat-thresholdObject.pre + 5)));
+        }
 
         if ( myHeight > 0 ) {
             floorGeometry.vertices[i].z = graphOffset + scale * (myHeight-thresholdObject.pre);
@@ -423,6 +457,85 @@ function createMeshes(meshes, dataYear, scale, graphOffset, lines) {
     meshes.push(myMesh);
     return  meshes;
 }
+
+
+function addDot(myColor, vertices, text) {
+    var dotGeometry = new THREE.Geometry();
+    for(var i=0; i< trialLocation.vertices.length; i ++) {
+        dotGeometry.vertices.push(vertices[i]);
+    }
+    var dotMaterial = new THREE.PointCloudMaterial( { size: 10, sizeAttenuation: false, color: myColor } );
+    var dot = new THREE.Points( dotGeometry, dotMaterial );
+    dot.rotation.x = -Math.PI/2;
+    dot.position.y = -graphDimensions.h/2;
+    dot.rotation.z = Math.PI/2;
+
+    glScene.add( dot );
+
+    if (!!text) {
+        var location = {
+            x: trialLocation.x,
+            y: trialLocation.y,
+            z: trialLocation.z
+        };
+
+        addText(location, text)
+    }
+}
+
+
+function addText(position, myText) {
+
+    var loader = new THREE.FontLoader();
+
+    loader.load( '../Open_Sans_Regular.json', function ( font ) {
+
+        var options = {
+            size: 90,
+            height: 90,
+            weight: 'normal',
+            font: font,
+            style: 'normal',
+            curveSegments: 12,
+            bevelThickness: 2,
+            bevelSize: 4,
+            bevelEnabled: true,
+            material: 0,
+            extrudeMaterial: 1
+        };
+
+        if (!position) {
+            position = {x: 0, y: 0};
+        }
+
+        var textGeo = new THREE.TextGeometry(myText, options);
+        var textMatterial = new THREE.MeshBasicMaterial( {
+            side:THREE.DoubleSide,
+            color: '#000000'
+        });
+
+        textGeo.computeBoundingBox();
+        textGeo.computeVertexNormals();
+
+        // textGeo.position.x = position.x;
+        // textGeo.position.y = position.y;
+        // textGeo.position.z = position.z;
+
+        var textMesh = new THREE.Mesh(textGeo, textMatterial);
+        // textMesh.rotation.x = -Math.PI/2;
+        // textMesh.position.y = -graphDimensions.h/2;
+        // textMesh.rotation.z = Math.PI/2;
+
+        // textMesh.position.x = position.x;
+        // textMesh.position.y = position.y;
+        // textMesh.position.z = position.z;
+
+        glScene.add( textMesh );
+    });
+
+
+}
+
 
 function init() {
 
@@ -489,8 +602,23 @@ function init() {
 
     var lines = [];
     var meshes = createMeshes([], realData2011, 1, 0, lines);
+    addDot('#000000', trialLocation.vertices);
+    maxYear.value = trialLocation.sat;
+    maxYear.year = 2011;
+
     meshes = createMeshes(meshes, realData2012, 1, 400, lines);
+    addDot('#FF0000', trialLocation.vertices);
+    if (trialLocation.sat > maxYear.value) {
+        maxYear.value = trialLocation.sat;
+        maxYear.year = 2012;
+    }
+
     meshes = createMeshes(meshes, realData2013, 1, 800, lines);
+    addDot('#00FF00', trialLocation.vertices);
+    if (trialLocation.sat > maxYear.value) {
+        maxYear.value = trialLocation.sat;
+        maxYear.year = 2013;
+    }
 
     var group = new THREE.Object3D();
     for(var i = 0; i<meshes.length; i++) {

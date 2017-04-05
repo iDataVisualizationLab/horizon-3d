@@ -3,6 +3,11 @@ if ( ! Detector.webgl ) {
     document.getElementById( 'container' ).innerHTML = "";
 }
 
+var url = window.location.href;
+var maxYear = {value: -9999, year: null};
+var trialLocation = {};
+trialLocation.lat = +getParameterByName("lat", url);
+trialLocation.lon =  +getParameterByName("lon", url);
 
 var container, stats;
 
@@ -66,6 +71,18 @@ var graphDimensions = {
     d:2405,
     h:1200
 };
+
+function getParameterByName(name, url) {
+    if (!url) {
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
 
 
 function labelAxis(width, data, direction){
@@ -323,6 +340,11 @@ function createGeometry(dataYear, scale, graphBase) {
     // just like when creating a terrain
     var myHeight;
 
+    trialLocation.sat = null;
+    trialLocation.x = null;
+    trialLocation.y = null;
+    trialLocation.vertices = [];
+
     for (var i =0; i< floorGeometry.vertices.length; i++){
 
         //push colors to the faceColors array
@@ -331,6 +353,15 @@ function createGeometry(dataYear, scale, graphBase) {
         point.lon = +point.lon;
         point.sat = +point.sat;
 
+
+        if (point.lat == trialLocation.lat && point.lon == trialLocation.lon) {
+            trialLocation.sat = point.sat;
+            trialLocation.x = floorGeometry.vertices[i].x;
+            trialLocation.y = floorGeometry.vertices[i].y;
+            trialLocation.z = scale*point.sat;
+
+            trialLocation.vertices.push(new THREE.Vector3(floorGeometry.vertices[i].x, floorGeometry.vertices[i].y, graphBase + scale*point.sat + 5))
+        }
         //push colors to the faceColors array
         faceColors.push(getColor(point.sat)); // one vertex on color, depending current data value
 
@@ -349,6 +380,86 @@ function createGeometry(dataYear, scale, graphBase) {
 
     return floorGeometry;
 }
+
+
+function addDot(myColor, vertices, text) {
+    var dotGeometry = new THREE.Geometry();
+    for(var i=0; i< trialLocation.vertices.length; i ++) {
+        dotGeometry.vertices.push(vertices[i]);
+    }
+    var dotMaterial = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false, color: myColor } );
+    var dot = new THREE.Points( dotGeometry, dotMaterial );
+    dot.rotation.x = -Math.PI/2;
+    dot.position.y = -graphDimensions.h/2;
+    dot.rotation.z = Math.PI/2;
+
+    glScene.add( dot );
+
+    if (!!text) {
+        var location = {
+            x: trialLocation.x,
+            y: trialLocation.y,
+            z: trialLocation.z
+        };
+
+        addText(location, text)
+    }
+}
+
+
+function addText(position, myText) {
+
+    var loader = new THREE.FontLoader();
+
+    loader.load( '../Open_Sans_Regular.json', function ( font ) {
+
+        var options = {
+            size: 90,
+            height: 90,
+            weight: 'normal',
+            font: font,
+            style: 'normal',
+            curveSegments: 12,
+            bevelThickness: 2,
+            bevelSize: 4,
+            bevelEnabled: true,
+            material: 0,
+            extrudeMaterial: 1
+        };
+
+        if (!position) {
+            position = {x: 0, y: 0};
+        }
+
+        var textGeo = new THREE.TextGeometry(myText, options);
+        var textMatterial = new THREE.MeshBasicMaterial( {
+            side:THREE.DoubleSide,
+            color: '#000000'
+        });
+
+        textGeo.computeBoundingBox();
+        textGeo.computeVertexNormals();
+
+        // textGeo.position.x = position.x;
+        // textGeo.position.y = position.y;
+        // textGeo.position.z = position.z;
+
+        var textMesh = new THREE.Mesh(textGeo, textMatterial);
+        // textMesh.rotation.x = -Math.PI/2;
+        // textMesh.position.y = -graphDimensions.h/2;
+        // textMesh.rotation.z = Math.PI/2;
+
+        // textMesh.position.x = position.x;
+        // textMesh.position.y = position.y;
+        // textMesh.position.z = position.z;
+
+        glScene.add( textMesh );
+    });
+
+
+}
+
+
 
 function init() {
 
@@ -416,6 +527,9 @@ function init() {
     floor2011.rotation.x = -Math.PI/2;
     floor2011.position.y = -graphDimensions.h/2;
     floor2011.rotation.z = Math.PI/2;
+    addDot('#000000', trialLocation.vertices);
+    maxYear.value = trialLocation.sat;
+    maxYear.year = 2011;
 
     var floorGeometry2012 = createGeometry(realData2012, 0.33, 400);
     var floor2012 = new THREE.Mesh(floorGeometry2012, wireframeMaterial);
@@ -423,11 +537,23 @@ function init() {
     floor2012.position.y = -graphDimensions.h/2;
     floor2012.rotation.z = Math.PI/2;
 
+    addDot('#FF0000', trialLocation.vertices);
+    if (trialLocation.sat > maxYear.value) {
+        maxYear.value = trialLocation.sat;
+        maxYear.year = 2012;
+    }
+
     var floorGeometry2013 = createGeometry(realData2013, 0.33, 800);
     var floor2013 = new THREE.Mesh(floorGeometry2013, wireframeMaterial);
     floor2013.rotation.x = -Math.PI/2;
     floor2013.position.y = -graphDimensions.h/2;
     floor2013.rotation.z = Math.PI/2;
+
+    addDot('#00FF00', trialLocation.vertices);
+    if (trialLocation.sat > maxYear.value) {
+        maxYear.value = trialLocation.sat;
+        maxYear.year = 2013;
+    }
 
     var group = new THREE.Object3D();
     group.add(floor2011);
