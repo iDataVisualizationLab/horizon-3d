@@ -437,26 +437,45 @@ function createGeometry(dataYear, scale, graphBase) {
 
 function addDot(myColor, vertices, text) {
     var dotGeometry = new THREE.Geometry();
+
+    var points = [];
+    debugger;
     for(var i=0; i< trialLocation.vertices.length; i ++) {
         dotGeometry.vertices.push(vertices[i]);
+
+        points.push(vertices[i]);
+        points.push(new THREE.Vector3(vertices[i].x*2, vertices[i].y*2, vertices[i].z*2 ));
+        points.push(new THREE.Vector3(vertices[i].x/2, vertices[i].y/2, vertices[i].z / 2))
+
     }
-    var dotMaterial = new THREE.PointCloudMaterial( { size: 8, sizeAttenuation: false, color: myColor } );
+
+    var tubeMaterial = new THREE.MeshBasicMaterial( {
+        side:THREE.DoubleSide,
+        color: myColor
+    });
+
+    var tubeGeo = new THREE.TubeGeometry(
+        new THREE.SplineCurve3(points),
+        64,
+        3
+    );
+
+    var tube = new THREE.Mesh(tubeGeo, tubeMaterial);
+    tube.rotation.x = -Math.PI/2;
+    tube.position.y = -graphDimensions.h/2;
+    tube.rotation.z = Math.PI/2;
+    glScene.add( tube );
+
+    var cate
+    // var dotMaterial = new THREE.PointCloudMaterial( { size: 8, sizeAttenuation: false, color: myColor } );
+    var dotMaterial = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false, color: '#FFFFFF' } );
     var dot = new THREE.Points( dotGeometry, dotMaterial );
     dot.rotation.x = -Math.PI/2;
     dot.position.y = -graphDimensions.h/2;
     dot.rotation.z = Math.PI/2;
-
+    //
     glScene.add( dot );
 
-    if (!!text) {
-        var location = {
-            x: trialLocation.x,
-            y: trialLocation.y,
-            z: trialLocation.z
-        };
-
-        addText(location, text)
-    }
 }
 
 
@@ -601,7 +620,8 @@ function init() {
     floor2011.rotation.x = -Math.PI/2;
     floor2011.position.y = -graphDimensions.h/2;
     floor2011.rotation.z = Math.PI/2;
-    addDot('#FFFF00', trialLocation.vertices);
+    // addDot('#FFFF00', trialLocation.vertices);
+    addDot(colorRange[0], trialLocation.vertices);
     maxYear.value = trialLocation.sat;
     maxYear.year = 2010;
     maxYear.y1 = 2010;
@@ -621,7 +641,8 @@ function init() {
     }
     maxYear.y2 = 2014;
     maxYear.v2 = trialLocation.sat;
-    addDot('#FF0000', trialLocation.vertices);
+    // addDot('#FF0000', trialLocation.vertices);
+    addDot(colorRange[1], trialLocation.vertices);
     trialLocation.vertices = [];
 
     trialLocation = trialLocations[2];
@@ -637,7 +658,8 @@ function init() {
     floor2013.rotation.x = -Math.PI/2;
     floor2013.position.y = -graphDimensions.h/2;
     floor2013.rotation.z = Math.PI/2;
-    addDot('#00FF00', trialLocation.vertices);
+    // addDot('#00FF00', trialLocation.vertices);
+    addDot(colorRange[2], trialLocation.vertices);
     trialLocation.vertices = [];
 
     var group = new THREE.Object3D();
