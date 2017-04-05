@@ -435,11 +435,12 @@ function createGeometry(dataYear, scale, graphBase) {
     return floorGeometry;
 }
 
-function addDot(myColor, vertices, text) {
+
+function addDot(myColor, vertices, maxZ, minZ) {
     var dotGeometry = new THREE.Geometry();
 
     var points = [];
-    debugger;
+    // var myZ =
     for(var i=0; i< trialLocation.vertices.length; i ++) {
         dotGeometry.vertices.push(vertices[i]);
 
@@ -457,7 +458,7 @@ function addDot(myColor, vertices, text) {
     var tubeGeo = new THREE.TubeGeometry(
         new THREE.SplineCurve3(points),
         64,
-        3
+        1
     );
 
     var tube = new THREE.Mesh(tubeGeo, tubeMaterial);
@@ -466,9 +467,13 @@ function addDot(myColor, vertices, text) {
     tube.rotation.z = Math.PI/2;
     glScene.add( tube );
 
-    var cate
+
+    var cTen = d3.scale.category10();
+    var colorRange = cTen.range();
+
+
     // var dotMaterial = new THREE.PointCloudMaterial( { size: 8, sizeAttenuation: false, color: myColor } );
-    var dotMaterial = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false, color: '#FFFFFF' } );
+    var dotMaterial = new THREE.PointCloudMaterial( { size: 8, sizeAttenuation: false, color: '#FF69B4' } );
     var dot = new THREE.Points( dotGeometry, dotMaterial );
     dot.rotation.x = -Math.PI/2;
     dot.position.y = -graphDimensions.h/2;
@@ -620,8 +625,8 @@ function init() {
     floor2011.rotation.x = -Math.PI/2;
     floor2011.position.y = -graphDimensions.h/2;
     floor2011.rotation.z = Math.PI/2;
-    // addDot('#FFFF00', trialLocation.vertices);
-    addDot(colorRange[0], trialLocation.vertices);
+    addDot('#000000', trialLocation.vertices);
+    // addDot(colorRange[0], trialLocation.vertices);
     maxYear.value = trialLocation.sat;
     maxYear.year = 2010;
     maxYear.y1 = 2010;
@@ -641,8 +646,8 @@ function init() {
     }
     maxYear.y2 = 2014;
     maxYear.v2 = trialLocation.sat;
-    // addDot('#FF0000', trialLocation.vertices);
-    addDot(colorRange[1], trialLocation.vertices);
+    addDot('#FF0000', trialLocation.vertices);
+    // addDot(colorRange[1], trialLocation.vertices);
     trialLocation.vertices = [];
 
     trialLocation = trialLocations[2];
@@ -658,8 +663,8 @@ function init() {
     floor2013.rotation.x = -Math.PI/2;
     floor2013.position.y = -graphDimensions.h/2;
     floor2013.rotation.z = Math.PI/2;
-    // addDot('#00FF00', trialLocation.vertices);
-    addDot(colorRange[2], trialLocation.vertices);
+    addDot('#00FF00', trialLocation.vertices);
+    // addDot(colorRange[2], trialLocation.vertices);
     trialLocation.vertices = [];
 
     var group = new THREE.Object3D();
