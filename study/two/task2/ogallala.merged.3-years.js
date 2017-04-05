@@ -570,14 +570,10 @@ function init() {
         color: colorRange[0]
     });
 
-    var redMaterial = new THREE.MeshBasicMaterial( {
-        side:THREE.DoubleSide,
-        color: colorRange[1]
-    });
 
     var material2013 = new THREE.MeshBasicMaterial( {
         side:THREE.DoubleSide,
-        color: colorRange[2]
+        color: colorRange[1]
     });
 
     var lineMat = new THREE.LineBasicMaterial({
@@ -616,7 +612,7 @@ function init() {
     var floor2013 = new THREE.Mesh(floorGeometry2013, material2013);
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
-        maxYear.year = 2013;
+        maxYear.year = 2016;
     }
 
     floor2013.rotation.x = -Math.PI/2;
