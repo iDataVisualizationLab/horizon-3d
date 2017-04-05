@@ -13,6 +13,14 @@ var trialLocations = [
     {
         lat: +getParameterByName("lat2", url),
         lon: +getParameterByName("lon2", url)
+    },
+    {
+        lat: +getParameterByName("lat3", url),
+        lon: +getParameterByName("lon3", url)
+    },
+    {
+        lat: +getParameterByName("lat4", url),
+        lon: +getParameterByName("lon4", url)
     }
 ];
 
@@ -44,9 +52,10 @@ var mouseX = 0, mouseY = 0;
 var windowWidth =  1200,
     windowHeight = 800;
 
-var realData2011;
+var realData2010;
 var realData2012;
-var realData2013;
+var realData2014;
+var realData2016;
 
 var startPosition;
 
@@ -72,21 +81,26 @@ var data = {
     }
 };
 
-d3.csv("../data/ascii_2010all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
-    realData2011 = data2011;
+d3.csv("../data/ascii_2010all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2010) {
+    realData2010 = data2010;
 
-    d3.csv("../data/ascii_2014all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
+    d3.csv("../data/ascii_2012all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
         realData2012 = data2012;
 
-        d3.csv("../data/ascii_2016all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
-            realData2013 = data2013;
+        d3.csv("../data/ascii_2014all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2014) {
+            realData2014 = data2014;
 
-            init();
-            render();
+            d3.csv("../data/ascii_2016all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2016) {
+                realData2016 = data2016;
+
+                init();
+                render();
+            });
         });
     });
 
 });
+
 
 
 var graphDimensions = {
@@ -603,7 +617,7 @@ function init() {
     maxYear.v1 = trialLocation.sat;
 
 
-
+    trialLocation = trialLocations[1];
     var floorGeometry2012 = createGeometry(realData2012);
     var floor2012 = new THREE.Mesh(floorGeometry2012, material2014);
     floor2012.rotation.x = -Math.PI/2;
@@ -612,29 +626,42 @@ function init() {
 
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
-        maxYear.year = 2014;
+        maxYear.year = 2012;
     }
-    maxYear.y2 = 2014;
+    maxYear.y2 = 2012;
     maxYear.v2 = trialLocation.sat;
 
     addDot('#FF0000', trialLocation.vertices);
     trialLocation.vertices = [];
 
-    trialLocation = trialLocations[1];
-    var floorGeometry2013 = createGeometry(realData2013);
+    trialLocation = trialLocations[2];
+    var floorGeometry2013 = createGeometry(realData2014);
     var floor2013 = new THREE.Mesh(floorGeometry2013, material2016);
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
-        maxYear.year = 2016;
+        maxYear.year = 2014;
     }
-    maxYear.y3 = 2016;
+    maxYear.y3 = 2014;
     maxYear.v3 = trialLocation.sat;
 
     floor2013.rotation.x = -Math.PI/2;
     floor2013.position.y = -graphDimensions.h/2;
     floor2013.rotation.z = Math.PI/2;
     addDot('#00FF00', trialLocation.vertices);
-    trialLocation.vertices = [];
+
+    trialLocation = trialLocations[3];
+    var floorGeometry2016 = createGeometry(realData2016);
+    var floor2016 = new THREE.Mesh(floorGeometry2016, material2016);
+    if (trialLocation.sat > maxYear.value) {
+        maxYear.value = trialLocation.sat;
+        maxYear.year = 2016;
+    }
+    maxYear.y4 = 2016;
+    maxYear.v4 = trialLocation.sat;
+    floor2016.rotation.x = -Math.PI/2;
+    floor2016.position.y = -graphDimensions.h/2;
+    floor2016.rotation.z = Math.PI/2;
+    addDot('#0000FF', trialLocation.vertices);
 
     var group = new THREE.Object3D();
     group.add(floor2011);

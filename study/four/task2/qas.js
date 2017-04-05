@@ -29,16 +29,22 @@ var questionsAndAnswers =  [
                 }
                 ,
                 {
-                    key: "2014",
-                    text:  "Year 2014 (red dot)",
+                    key: "2012",
+                    text:  "Year 2012 (red dot)",
                     color: colorRange[1]
+
+                },
+                {
+                    key: "2014",
+                    text:  "Year 2014 (green dot)",
+                    color: colorRange[2]
 
                 }
                 ,
                 {
                     key: "2016",
-                    text:  "Year 2016 (green dot)",
-                    color: colorRange[2]
+                    text:  "Year 2016 (blue dot)",
+                    color: colorRange[4]
 
                 }
             ]
