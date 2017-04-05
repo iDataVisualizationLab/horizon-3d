@@ -137,6 +137,8 @@ function displayQuestion() {
     }
 
 
+    d3.select("#graphType")
+        .text("Graph type: " + graphType);
     displayGraphType(graphType);
 
 }
