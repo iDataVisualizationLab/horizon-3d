@@ -81,7 +81,7 @@ function fireLogging(graphType) {
     var endTime = (new Date()).getTime();
     var dur = endTime - startTime;
     var maxStr = convertMaxYeartoQueryString(win.maxYear);
-    var myUrl = httpURLBase + '?user=' + userId + '&graphType=' + graphType + '&task=Task1&questionKey=' + questionAnswer.question.key + '&correct=' + correct + '&duration=' + dur + "&selected" + a + maxStr;
+    var myUrl = httpURLBase + '?user=' + userId + '&graphType=' + graphType + '&task=Task1&questionKey=' + questionAnswer.question.key + '&correct=' + correct + '&duration=' + dur + "&selected=" + a + maxStr;
     httpGetAsync(myUrl);
     console.log(questionAnswer);
     console.log(a);
