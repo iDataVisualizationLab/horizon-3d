@@ -593,10 +593,13 @@ function init() {
     floor2010.rotation.x = -Math.PI/2;
     floor2010.position.y = -graphDimensions.h/2;
     floor2010.rotation.z = Math.PI/2;
-    addDot('#000000', trialLocation.vertices);
+    addDot('#FFFF00', trialLocation.vertices);
     trialLocation.vertices = [];
     maxYear.value = trialLocation.sat;
     maxYear.year = 2010;
+    maxYear.y1 = 2010;
+    maxYear.v1 = trialLocation.sat;
+
     var floorGeometry2012 = createGeometry(realData2012);
     var floor2012 = new THREE.Mesh(floorGeometry2012, material2012);
     floor2012.rotation.x = -Math.PI/2;
@@ -609,7 +612,8 @@ function init() {
     }
 
     addDot('#FF0000', trialLocation.vertices);
-    trialLocation.vertices = [];
+    maxYear.y2 = 2012;
+    maxYear.v2 = trialLocation.sat;
 
     var floorGeometry2014 = createGeometry(realData2014);
     var floor2014 = new THREE.Mesh(floorGeometry2014, material2014);
@@ -622,7 +626,8 @@ function init() {
     floor2014.position.y = -graphDimensions.h/2;
     floor2014.rotation.z = Math.PI/2;
     addDot('#00FF00', trialLocation.vertices);
-    trialLocation.vertices = [];
+    maxYear.y3 = 2014;
+    maxYear.v3 = trialLocation.sat;
 
     var floorGeometry2016 = createGeometry(realData2016);
     var floor2016 = new THREE.Mesh(floorGeometry2016, material2016);
@@ -630,6 +635,8 @@ function init() {
         maxYear.value = trialLocation.sat;
         maxYear.year = 2016;
     }
+    maxYear.y4 = 2016;
+    maxYear.v4 = trialLocation.sat;
     floor2016.rotation.x = -Math.PI/2;
     floor2016.position.y = -graphDimensions.h/2;
     floor2016.rotation.z = Math.PI/2;

@@ -93,6 +93,9 @@ function displayGraphType(graphType) {
         return;
     }
 
+    d3.select("#graphType")
+        .text("Graph type: " + graphType);
+
     var file = graphTypeToFile[graphType];
     var iframe = document.getElementById('graph');
     var src = iframe.getAttribute('src');
@@ -119,12 +122,24 @@ function displayQuestion() {
         .selectAll('*')
         .remove();
 
-    d3.select("#answer").selectAll('span')
-        .data(questionAnswer.answer).enter()
-        .append('span')
-        .html(function (d) {
-            return '<input type="radio" name="answer" value="' + d.key  + '"/> <span style="color:' + d.color + '">'+ d.text + '</span><br/>';
-        });
+
+    if (graphType == graphTypes[0]) {
+        d3.select("#answer").selectAll('span')
+            .data(questionAnswer.answer).enter()
+            .append('span')
+            .html(function (d) {
+                return '<input type="radio" name="answer" value="' + d.key  + '"/> <span style="color:' + d.color + '">'+ d.text + '</span><br/>';
+            });
+    }
+    else {
+        d3.select("#answer").selectAll('span')
+            .data(questionAnswer.answer).enter()
+            .append('span')
+            .html(function (d) {
+                return '<input type="radio" name="answer" value="' + d.key  + '"/>'+ d.text + '<br/>';
+            });
+    }
+
 
 
     displayGraphType(graphType);
