@@ -47,8 +47,13 @@ var locations = [
 
 var startTime = (new Date()).getTime();
 
-var trialLocationIndex = (locations.length -1) * Math.round(Math.random());
+var trialLocationIndex = (100 * Math.round(Math.random())) % (locations.length);
 var trialLocation = locations[trialLocationIndex];
+
+function nextLocations() {
+    trialLocationIndex = (100 * Math.round(Math.random())) % (locations.length);
+    trialLocation = locations[trialLocationIndex];
+}
 
 var graphTypeToFile = {
     merged: 'task2/ogallala.merged.3-years.html?lat1=' + trialLocation[0].lat + '&lon1=' + trialLocation[0].lon + '&lat2=' + trialLocation[1].lat + '&lon2=' + trialLocation[1].lon,
@@ -82,6 +87,16 @@ function nextGraphType() {
 
         return;
     }
+
+
+    nextLocations();
+
+    graphTypeToFile = {
+        merged: 'task2/ogallala.merged.3-years.html?lat1=' + trialLocation[0].lat + '&lon1=' + trialLocation[0].lon + '&lat2=' + trialLocation[1].lat + '&lon2=' + trialLocation[1].lon,
+        multiple: 'task2/ogallala.small.multiple.html?lat1=' + trialLocation[0].lat + '&lon1=' + trialLocation[0].lon + '&lat2=' + trialLocation[1].lat + '&lon2=' + trialLocation[1].lon,
+        horizon: 'task2/ogallala.horizon.single.surface.html?lat1=' + trialLocation[0].lat + '&lon1=' + trialLocation[0].lon + '&lat2=' + trialLocation[1].lat + '&lon2=' + trialLocation[1].lon
+    };
+
 
     currentGraphTypeIndex = currentGraphTypeIndex % graphTypes.length;
     graphType = graphTypes[currentGraphTypeIndex];
