@@ -49,13 +49,13 @@ var data = {
     }
 };
 
-d3.csv("../data/ascii_2011all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
+d3.csv("../data/ascii_2010all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
     realData2011 = data2011;
 
     d3.csv("../data/ascii_2012all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
         realData2012 = data2012;
 
-        d3.csv("../data/ascii_2013all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
+        d3.csv("../data/ascii_2016all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
             realData2013 = data2013;
 
             init();
@@ -555,20 +555,16 @@ function init() {
     var cTen = d3.scale.category10();
     var colorRange = cTen.range();
 
-    var material2011 = new THREE.MeshBasicMaterial( {
+    var material2010 = new THREE.MeshBasicMaterial( {
         side:THREE.DoubleSide,
         color: colorRange[0]
     });
 
-    var redMaterial = new THREE.MeshBasicMaterial( {
+    var material2016 = new THREE.MeshBasicMaterial( {
         side:THREE.DoubleSide,
         color: colorRange[1]
     });
 
-    var material2013 = new THREE.MeshBasicMaterial( {
-        side:THREE.DoubleSide,
-        color: colorRange[2]
-    });
 
     var lineMat = new THREE.LineBasicMaterial({
         color: 0xffffff
@@ -578,7 +574,7 @@ function init() {
     });
 
     var floorGeometry2011 = createGeometry(realData2011);
-    var floor2011 = new THREE.Mesh(floorGeometry2011, material2011);
+    var floor2011 = new THREE.Mesh(floorGeometry2011, material2010);
     floor2011.rotation.x = -Math.PI/2;
     floor2011.position.y = -graphDimensions.h/2;
     floor2011.rotation.z = Math.PI/2;
@@ -602,7 +598,7 @@ function init() {
     // trialLocation.vertices = [];
 
     var floorGeometry2013 = createGeometry(realData2013);
-    var floor2013 = new THREE.Mesh(floorGeometry2013, material2013);
+    var floor2013 = new THREE.Mesh(floorGeometry2013, material2016);
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
         maxYear.year = 2013;

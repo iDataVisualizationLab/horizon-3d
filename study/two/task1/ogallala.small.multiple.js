@@ -49,13 +49,13 @@ var data = {
     }
 };
 
-d3.csv("../data/ascii_2011all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
+d3.csv("../data/ascii_2010all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
     realData2011 = data2011;
 
     d3.csv("../data/ascii_2012all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
         realData2012 = data2012;
 
-        d3.csv("../data/ascii_2013all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
+        d3.csv("../data/ascii_2016all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
             realData2013 = data2013;
 
             init();
