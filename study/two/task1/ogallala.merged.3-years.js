@@ -582,7 +582,7 @@ function init() {
     addDot('#000000', trialLocation.vertices);
     trialLocation.vertices = [];
     maxYear.value = trialLocation.sat;
-    maxYear.year = 2011;
+    maxYear.year = 2010;
     // var floorGeometry2012 = createGeometry(realData2012);
     // var floor2012 = new THREE.Mesh(floorGeometry2012, redMaterial);
     // floor2012.rotation.x = -Math.PI/2;
@@ -601,7 +601,7 @@ function init() {
     var floor2013 = new THREE.Mesh(floorGeometry2013, material2016);
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
-        maxYear.year = 2013;
+        maxYear.year = 2016;
     }
 
     floor2013.rotation.x = -Math.PI/2;
