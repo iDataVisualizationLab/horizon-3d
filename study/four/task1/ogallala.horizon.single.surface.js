@@ -35,9 +35,10 @@ var mouseX = 0, mouseY = 0;
 var windowWidth =  1700,
     windowHeight = 1200;
 
-var realData2011;
+var realData2010;
 var realData2012;
-var realData2013;
+var realData2014;
+var realData2016;
 
 var startPosition;
 
@@ -80,21 +81,26 @@ var data = {
     }
 };
 
-d3.csv("../data/ascii_2011all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
-    realData2011 = data2011;
+d3.csv("../data/ascii_2010all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2010) {
+    realData2010 = data2010;
 
     d3.csv("../data/ascii_2012all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
         realData2012 = data2012;
 
-        d3.csv("../data/ascii_2013all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
-            realData2013 = data2013;
+        d3.csv("../data/ascii_2014all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2014) {
+            realData2014 = data2014;
 
-            init();
-            render();
+            d3.csv("../data/ascii_2016all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2016) {
+                realData2016 = data2016;
+
+                init();
+                render();
+            });
         });
     });
 
 });
+
 
 
 var graphDimensions = {
@@ -601,10 +607,12 @@ function init() {
 
 
     var lines = [];
-    var meshes = createMeshes([], realData2011, 1, 0, lines);
-    addDot('#000000', trialLocation.vertices);
+    var meshes = createMeshes([], realData2010, 1, 0, lines);
+    addDot('#FFFF00', trialLocation.vertices);
     maxYear.value = trialLocation.sat;
-    maxYear.year = 2011;
+    maxYear.year = 2010;
+    maxYear.y1 = 2010;
+    maxYear.v1 = trialLocation.sat;
 
     meshes = createMeshes(meshes, realData2012, 1, 400, lines);
     addDot('#FF0000', trialLocation.vertices);
@@ -612,13 +620,26 @@ function init() {
         maxYear.value = trialLocation.sat;
         maxYear.year = 2012;
     }
+    maxYear.y2 = 2012;
+    maxYear.v2 = trialLocation.sat;
 
-    meshes = createMeshes(meshes, realData2013, 1, 800, lines);
+    meshes = createMeshes(meshes, realData2014, 1, 800, lines);
     addDot('#00FF00', trialLocation.vertices);
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
-        maxYear.year = 2013;
+        maxYear.year = 2014;
     }
+    maxYear.y3 = 2014;
+    maxYear.v3 = trialLocation.sat;
+
+    meshes = createMeshes(meshes, realData2016, 1, 1200, lines);
+    addDot('#0000FF', trialLocation.vertices);
+    if (trialLocation.sat > maxYear.value) {
+        maxYear.value = trialLocation.sat;
+        maxYear.year = 2016;
+    }
+    maxYear.y4 = 2016;
+    maxYear.v4 = trialLocation.sat;
 
     var group = new THREE.Object3D();
     for(var i = 0; i<meshes.length; i++) {
