@@ -1,37 +1,44 @@
 var graphTypes = ['merged', 'multiple', 'horizon'];
 // level 200
-// 12x255; 45x43; 79x108; 55x236
+// 12x255; 45x43; 55x236
 
-// level 600
-// 115x50; 112x50, 118x57
 
 // level above 600
 // 60x72, 54x59, 57x56
 var locations = [
     {
-        lat: 12,
-        lon: 255,
+        lat: 57,
+        lon: 56,
         sat: null
 
     },
-    //
-    // {
-    //     lat: 18,
-    //     lon: 23,
-    //     sat: null
-    // },
-    //
-    // {
-    //     lat: 57,
-    //     lon: 56,
-    //     sat: null
-    // },
-    //
-    // {
-    //     lat: 63,
-    //     lon: 74,
-    //     sat: null
-    // }
+    {
+        lat: 12,
+        lon: 255,
+        sat: null
+    },
+
+    {
+        lat: 60,
+        lon: 72,
+        sat: null
+    },
+
+    {
+        lat: 118,
+        lon: 57,
+        sat: null
+    },
+    {
+        lat: 45,
+        lon: 53,
+        sat: null
+    },
+    {
+        lat: 55,
+        lon: 236,
+        sat: null
+    }
 ];
 
 var trialLocationIndex = (locations.length -1) * Math.round(Math.random());

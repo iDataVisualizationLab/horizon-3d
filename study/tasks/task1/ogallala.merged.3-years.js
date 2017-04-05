@@ -374,7 +374,7 @@ function createGeometry(dataYear, scale, graphBase) {
             trialLocation.y = floorGeometry.vertices[i].y;
             trialLocation.z = scale*point.sat;
 
-            trialLocation.vertices.push(new THREE.Vector3(floorGeometry.vertices[i].x, floorGeometry.vertices[i].y, scale*point.sat))
+            trialLocation.vertices.push(new THREE.Vector3(floorGeometry.vertices[i].x, floorGeometry.vertices[i].y, scale*point.sat + 10))
         }
 
         if (max.lat < point.lat) {
