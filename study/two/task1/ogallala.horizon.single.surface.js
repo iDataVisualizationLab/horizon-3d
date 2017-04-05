@@ -602,7 +602,7 @@ function init() {
 
     var lines = [];
     var meshes = createMeshes([], realData2011, 1, 0, lines);
-    addDot('#000000', trialLocation.vertices);
+    addDot('#FF0000', trialLocation.vertices);
     maxYear.value = trialLocation.sat;
     maxYear.year = 2011;
 

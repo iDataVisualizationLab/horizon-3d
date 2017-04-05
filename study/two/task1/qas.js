@@ -23,7 +23,7 @@ var questionsAndAnswers =  [
             answer: [
                 {
                     key: "2010",
-                    text:  "Year 2010 (black dot)",
+                    text:  "Year 2010 (red dot)",
                     color: colorRange[0]
 
                 }

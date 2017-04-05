@@ -43,7 +43,7 @@ var locations = [
 
 var startTime = (new Date()).getTime();
 
-var trialLocationIndex = (locations.length -1) * Math.round(Math.random());
+var trialLocationIndex = (100 * Math.round(Math.random())) % (locations.length);
 var trialLocation = locations[trialLocationIndex];
 
 var graphTypeToFile = {
