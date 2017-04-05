@@ -39,6 +39,23 @@ var locations = [
             lon: 53,
             sat: null
         }
+    ],
+    [
+        {
+            lat: 12,
+            lon: 255,
+            sat: null
+        },
+        {
+            lat: 55,
+            lon: 236,
+            sat: null
+        },
+        {
+            lat: 45,
+            lon: 53,
+            sat: null
+        }
     ]
 ];
 
