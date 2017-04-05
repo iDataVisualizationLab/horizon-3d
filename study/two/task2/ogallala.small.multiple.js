@@ -5,9 +5,31 @@ if ( ! Detector.webgl ) {
 
 var url = window.location.href;
 var maxYear = {value: -9999, year: null};
+var trialLocations = [
+    {
+        lat: +getParameterByName("lat1", url),
+        lon: +getParameterByName("lon1", url)
+    },
+    {
+        lat: +getParameterByName("lat2", url),
+        lon: +getParameterByName("lon2", url)
+    }
+];
+
+function getParameterByName(name, url) {
+    if (!url) {
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+
 var trialLocation = {};
-trialLocation.lat = +getParameterByName("lat", url);
-trialLocation.lon =  +getParameterByName("lon", url);
 
 var container, stats;
 
@@ -71,19 +93,6 @@ var graphDimensions = {
     d:2405,
     h:1200
 };
-
-function getParameterByName(name, url) {
-    if (!url) {
-        url = window.location.href;
-    }
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-
 
 function labelAxis(width, data, direction){
 
@@ -522,6 +531,7 @@ function init() {
         color: 0x000000
     });
 
+    trialLocation = trialLocations[0];
     var floorGeometry2011 = createGeometry(realData2011, 0.33, 0);
     var floor2011 = new THREE.Mesh(floorGeometry2011, wireframeMaterial);
     floor2011.rotation.x = -Math.PI/2;
@@ -529,20 +539,10 @@ function init() {
     floor2011.rotation.z = Math.PI/2;
     addDot('#000000', trialLocation.vertices);
     maxYear.value = trialLocation.sat;
-    maxYear.year = 2011;
+    maxYear.year = 2010;
 
-    // var floorGeometry2012 = createGeometry(realData2012, 0.33, 400);
-    // var floor2012 = new THREE.Mesh(floorGeometry2012, wireframeMaterial);
-    // floor2012.rotation.x = -Math.PI/2;
-    // floor2012.position.y = -graphDimensions.h/2;
-    // floor2012.rotation.z = Math.PI/2;
 
-    // addDot('#FF0000', trialLocation.vertices);
-    // if (trialLocation.sat > maxYear.value) {
-    //     maxYear.value = trialLocation.sat;
-    //     maxYear.year = 2012;
-    // }
-
+    trialLocation = trialLocations[1];
     var floorGeometry2013 = createGeometry(realData2013, 0.33, 800);
     var floor2013 = new THREE.Mesh(floorGeometry2013, wireframeMaterial);
     floor2013.rotation.x = -Math.PI/2;
@@ -552,12 +552,11 @@ function init() {
     addDot('#00FF00', trialLocation.vertices);
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
-        maxYear.year = 2013;
+        maxYear.year = 2016;
     }
 
     var group = new THREE.Object3D();
     group.add(floor2011);
-    // group.add(floor2012);
     group.add(floor2013);
 
 
