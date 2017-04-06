@@ -677,7 +677,7 @@ function init() {
 
     trialLocation = trialLocations[3];
     meshes = createMeshes(meshes, realData2014, 1, 1200, lines);
-    addDot('#00FF00', trialLocation.vertices);
+    addDot('#0000FF', trialLocation.vertices);
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
         maxYear.year = 2016;
