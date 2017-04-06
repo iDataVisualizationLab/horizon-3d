@@ -22,20 +22,18 @@ var questionsAndAnswers =  [
             },
             answer: [
                 {
+                    key: "2016",
+                    text:  "Year 2016",
+                    color: colorRange[1],
+                    help: '(green line)',
+                    helpColor: '#00FF00'
+                },
+                {
                     key: "2010",
                     text:  "Year 2010 (red dot)",
-                    color: colorRange[0]
-                }
-                // ,
-                // {
-                //     key: "2012",
-                //     text:  "Year 2012 (red dot)"
-                // }
-                ,
-                {
-                    key: "2016",
-                    text:  "Year 2016 (green dot)",
-                    color: colorRange[1]
+                    color: colorRange[0],
+                    help: '(red line)',
+                    helpColor: '#FF0000'
                 }
             ]
         }

@@ -469,29 +469,54 @@ function createMeshes(meshes, dataYear, scale, graphOffset, lines) {
 }
 
 
-function addDot(myColor, vertices, text) {
+
+function addDot(myColor, vertices, maxZ, minZ) {
     var dotGeometry = new THREE.Geometry();
+
+    var points = [];
+    // var myZ =
     for(var i=0; i< trialLocation.vertices.length; i ++) {
         dotGeometry.vertices.push(vertices[i]);
+
+        points.push(vertices[i]);
+        points.push(new THREE.Vector3(vertices[i].x*2, vertices[i].y*2, vertices[i].z*2 ));
+        points.push(new THREE.Vector3(vertices[i].x/2, vertices[i].y/2, vertices[i].z / 2))
+
     }
-    var dotMaterial = new THREE.PointCloudMaterial( { size: 10, sizeAttenuation: false, color: myColor } );
+
+    var tubeMaterial = new THREE.MeshBasicMaterial( {
+        side:THREE.DoubleSide,
+        color: myColor
+    });
+
+    var tubeGeo = new THREE.TubeGeometry(
+        new THREE.SplineCurve3(points),
+        64,
+        1
+    );
+
+    var tube = new THREE.Mesh(tubeGeo, tubeMaterial);
+    tube.rotation.x = -Math.PI/2;
+    tube.position.y = -graphDimensions.h/2;
+    tube.rotation.z = Math.PI/2;
+    glScene.add( tube );
+
+
+    var cTen = d3.scale.category10();
+    var colorRange = cTen.range();
+
+
+    // var dotMaterial = new THREE.PointCloudMaterial( { size: 8, sizeAttenuation: false, color: myColor } );
+    var dotMaterial = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false, color: '#FF69B4' } );
     var dot = new THREE.Points( dotGeometry, dotMaterial );
     dot.rotation.x = -Math.PI/2;
     dot.position.y = -graphDimensions.h/2;
     dot.rotation.z = Math.PI/2;
-
+    //
     glScene.add( dot );
 
-    if (!!text) {
-        var location = {
-            x: trialLocation.x,
-            y: trialLocation.y,
-            z: trialLocation.z
-        };
-
-        addText(location, text)
-    }
 }
+
 
 
 function addText(position, myText) {
