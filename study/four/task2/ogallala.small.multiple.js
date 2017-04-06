@@ -17,6 +17,10 @@ var trialLocations = [
     {
         lat: +getParameterByName("lat3", url),
         lon: +getParameterByName("lon3", url)
+    },
+    {
+        lat: +getParameterByName("lat4", url),
+        lon: +getParameterByName("lon4", url)
     }
 ];
 
@@ -47,9 +51,10 @@ var mouseX = 0, mouseY = 0;
 var windowWidth =  1200,
     windowHeight = 800;
 
-var realData2011;
+var realData2010;
 var realData2012;
-var realData2013;
+var realData2014;
+var realData2016;
 
 var startPosition;
 
@@ -75,21 +80,27 @@ var data = {
     }
 };
 
-d3.csv("../data/ascii_2010all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2011) {
-    realData2011 = data2011;
 
-    d3.csv("../data/ascii_2014all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
+d3.csv("../data/ascii_2010all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2010) {
+    realData2010 = data2010;
+
+    d3.csv("../data/ascii_2012all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2012) {
         realData2012 = data2012;
 
-        d3.csv("../data/ascii_2016all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2013) {
-            realData2013 = data2013;
+        d3.csv("../data/ascii_2014all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2014) {
+            realData2014 = data2014;
 
-            init();
-            render();
+            d3.csv("../data/ascii_2016all.optimized-2-2.optimized-2-2.converted.csv", function(error, data2016) {
+                realData2016 = data2016;
+
+                init();
+                render();
+            });
         });
     });
 
 });
+
 
 
 var graphDimensions = {
@@ -395,28 +406,52 @@ function createGeometry(dataYear, scale, graphBase) {
 }
 
 
-function addDot(myColor, vertices, text) {
+
+function addDot(myColor, vertices, maxZ, minZ) {
     var dotGeometry = new THREE.Geometry();
+
+    var points = [];
+    // var myZ =
     for(var i=0; i< trialLocation.vertices.length; i ++) {
         dotGeometry.vertices.push(vertices[i]);
+
+        points.push(vertices[i]);
+        points.push(new THREE.Vector3(vertices[i].x*2, vertices[i].y*2, vertices[i].z*2 ));
+        points.push(new THREE.Vector3(vertices[i].x/2, vertices[i].y/2, vertices[i].z / 2))
+
     }
-    var dotMaterial = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false, color: myColor } );
+
+    var tubeMaterial = new THREE.MeshBasicMaterial( {
+        side:THREE.DoubleSide,
+        color: myColor
+    });
+
+    var tubeGeo = new THREE.TubeGeometry(
+        new THREE.SplineCurve3(points),
+        64,
+        1
+    );
+
+    var tube = new THREE.Mesh(tubeGeo, tubeMaterial);
+    tube.rotation.x = -Math.PI/2;
+    tube.position.y = -graphDimensions.h/2;
+    tube.rotation.z = Math.PI/2;
+    glScene.add( tube );
+
+
+    var cTen = d3.scale.category10();
+    var colorRange = cTen.range();
+
+
+    // var dotMaterial = new THREE.PointCloudMaterial( { size: 8, sizeAttenuation: false, color: myColor } );
+    var dotMaterial = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false, color: '#FF69B4' } );
     var dot = new THREE.Points( dotGeometry, dotMaterial );
     dot.rotation.x = -Math.PI/2;
     dot.position.y = -graphDimensions.h/2;
     dot.rotation.z = Math.PI/2;
-
+    //
     glScene.add( dot );
 
-    if (!!text) {
-        var location = {
-            x: trialLocation.x,
-            y: trialLocation.y,
-            z: trialLocation.z
-        };
-
-        addText(location, text)
-    }
 }
 
 
@@ -536,11 +571,11 @@ function init() {
     });
 
     trialLocation = trialLocations[0];
-    var floorGeometry2011 = createGeometry(realData2011, 0.33, 0);
-    var floor2011 = new THREE.Mesh(floorGeometry2011, wireframeMaterial);
-    floor2011.rotation.x = -Math.PI/2;
-    floor2011.position.y = -graphDimensions.h/2;
-    floor2011.rotation.z = Math.PI/2;
+    var floorGeometry2010 = createGeometry(realData2010, 0.33, 0);
+    var floor2010 = new THREE.Mesh(floorGeometry2010, wireframeMaterial);
+    floor2010.rotation.x = -Math.PI/2;
+    floor2010.position.y = -graphDimensions.h/2;
+    floor2010.rotation.z = Math.PI/2;
     addDot('#FFFF00', trialLocation.vertices);
     maxYear.value = trialLocation.sat;
     maxYear.year = 2010;
@@ -556,31 +591,47 @@ function init() {
 
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
-        maxYear.year = 2014;
+        maxYear.year = 2012;
     }
-    maxYear.y2 = 2014;
+    maxYear.y2 = 2012;
     maxYear.v2 = trialLocation.sat;
     addDot('#FF0000', trialLocation.vertices);
 
     trialLocation = trialLocations[2];
-    var floorGeometry2013 = createGeometry(realData2013, 0.33, 800);
-    var floor2013 = new THREE.Mesh(floorGeometry2013, wireframeMaterial);
-    floor2013.rotation.x = -Math.PI/2;
-    floor2013.position.y = -graphDimensions.h/2;
-    floor2013.rotation.z = Math.PI/2;
+    var floorGeometry2014 = createGeometry(realData2014, 0.33, 800);
+    var floor2014 = new THREE.Mesh(floorGeometry2014, wireframeMaterial);
+    floor2014.rotation.x = -Math.PI/2;
+    floor2014.position.y = -graphDimensions.h/2;
+    floor2014.rotation.z = Math.PI/2;
 
     addDot('#00FF00', trialLocation.vertices);
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
-        maxYear.year = 2016;
+        maxYear.year = 2014;
     }
-    maxYear.y3 = 2016;
+    maxYear.y3 = 2014;
     maxYear.v3 = trialLocation.sat;
 
+    trialLocation = trialLocations[3];
+    var floorGeometry2016 = createGeometry(realData2016);
+    var floor2016 = new THREE.Mesh(floorGeometry2016, wireframeMaterial);
+    if (trialLocation.sat > maxYear.value) {
+        maxYear.value = trialLocation.sat;
+        maxYear.year = 2016;
+    }
+    maxYear.y4 = 2016;
+    maxYear.v4 = trialLocation.sat;
+    floor2016.rotation.x = -Math.PI/2;
+    floor2016.position.y = -graphDimensions.h/2;
+    floor2016.rotation.z = Math.PI/2;
+    addDot('#0000FF', trialLocation.vertices);
+
+
     var group = new THREE.Object3D();
-    group.add(floor2011);
+    group.add(floor2010);
     group.add(floor2012);
-    group.add(floor2013);
+    group.add(floor2014);
+    group.add(floor2016);
 
 
     // //grid lines

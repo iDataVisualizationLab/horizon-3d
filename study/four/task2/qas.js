@@ -22,29 +22,33 @@ var questionsAndAnswers =  [
             },
             answer: [
                 {
-                    key: "2010",
-                    text:  "Year 2010 (yellow dot)",
-                    color: colorRange[0]
-
-                }
-                ,
-                {
-                    key: "2012",
-                    text:  "Year 2012 (red dot)",
-                    color: colorRange[1]
-
+                    key: "2016",
+                    text:  "Year 2016",
+                    color: colorRange[4],
+                    help: '(blue line)',
+                    helpColor: '#0000FF'
                 },
                 {
                     key: "2014",
-                    text:  "Year 2014 (green dot)",
-                    color: colorRange[2]
-
-                }
-                ,
+                    text:  "Year 2014",
+                    color: colorRange[2],
+                    help: '(green line)',
+                    helpColor: '#00FF00'
+                },
                 {
-                    key: "2016",
-                    text:  "Year 2016 (blue dot)",
-                    color: colorRange[4]
+                    key: "2012",
+                    text:  "Year 2012",
+                    color: colorRange[1],
+                    help: '(red line)',
+                    helpColor: '#FF0000'
+
+                },
+                {
+                    key: "2010",
+                    text:  "Year 2010",
+                    color: colorRange[0],
+                    help: '(yellow line)',
+                    helpColor: '#FFFF00'
 
                 }
             ]
