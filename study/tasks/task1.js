@@ -127,7 +127,9 @@ function displayQuestion() {
             .data(questionAnswer.answer).enter()
             .append('span')
             .html(function (d) {
-                return '<input type="radio" name="answer" value="' + d.key  + '"/> <span style="color:' + d.color + '">'+ d.text + '</span><br/>';
+                return '<input type="radio" name="answer" value="' + d.key  + '"/> <span style="color:' + d.color + '">'+ d.text + '</span>' +
+                    '<span style="font-weight: bold; color:' + d.helpColor + '">' + d.help + '</span>' +
+                    '<br/>';
             });
     }
     else {
@@ -135,9 +137,13 @@ function displayQuestion() {
             .data(questionAnswer.answer).enter()
             .append('span')
             .html(function (d) {
-                return '<input type="radio" name="answer" value="' + d.key  + '"/>'+ d.text + '<br/>';
+                return '<input type="radio" name="answer" value="' + d.key  + '"/>'+ d.text +
+                    '<span style="font-weight: bold; color:' + d.helpColor + '">' + d.help + '</span>' +
+
+                    '<br/>';
             });
     }
+
 
 
     displayGraphType(graphType);
