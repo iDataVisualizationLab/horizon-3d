@@ -56,6 +56,11 @@ var currentQuestionIndex = -1;
 var currentGraphTypeIndex = 0;
 var graphType = graphTypes[currentGraphTypeIndex];
 
+function nextLocations() {
+    trialLocationIndex = (100 * Math.round(Math.random())) % (locations.length);
+    trialLocation = locations[trialLocationIndex];
+}
+
 
 function handleQuestionConfirm() {
     // debugger;
@@ -92,6 +97,15 @@ function displayGraphType(graphType) {
         alert("Not found fine representation for this graph type: " + graphType);
         return;
     }
+
+    nextLocations();
+
+    graphTypeToFile = {
+        merged: 'task1/ogallala.merged.3-years.html?lat=' + trialLocation.lat + '&lon=' + trialLocation.lon ,
+        multiple: 'task1/ogallala.small.multiple.html?lat=' + trialLocation.lat + '&lon=' + trialLocation.lon ,
+        horizon: 'task1/ogallala.horizon.single.surface.html?lat=' + trialLocation.lat + '&lon=' + trialLocation.lon
+    };
+
 
     d3.select("#graphType")
         .text("Graph type: " + graphType);
