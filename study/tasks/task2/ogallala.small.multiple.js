@@ -432,7 +432,7 @@ function addDot(myColor, vertices, maxZ, minZ) {
 
 
     // var dotMaterial = new THREE.PointCloudMaterial( { size: 8, sizeAttenuation: false, color: myColor } );
-    var dotMaterial = new THREE.PointCloudMaterial( { size: 8, sizeAttenuation: false, color: '#FF69B4' } );
+    var dotMaterial = new THREE.PointCloudMaterial( { size: 5, sizeAttenuation: false, color: '#FF69B4' } );
     var dot = new THREE.Points( dotGeometry, dotMaterial );
     dot.rotation.x = -Math.PI/2;
     dot.position.y = -graphDimensions.h/2;
