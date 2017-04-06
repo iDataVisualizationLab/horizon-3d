@@ -56,6 +56,10 @@ var currentQuestionIndex = -1;
 var currentGraphTypeIndex = 0;
 var graphType = graphTypes[currentGraphTypeIndex];
 
+function nextLocations() {
+    trialLocationIndex = (100 * Math.round(Math.random())) % (locations.length);
+    trialLocation = locations[trialLocationIndex];
+}
 
 function handleQuestionConfirm() {
     // debugger;
@@ -78,6 +82,14 @@ function nextGraphType() {
 
         return;
     }
+
+    nextLocations();
+
+    graphTypeToFile = {
+        merged: 'task1/ogallala.merged.3-years.html?lat=' + trialLocation.lat + '&lon=' + trialLocation.lon ,
+        multiple: 'task1/ogallala.small.multiple.html?lat=' + trialLocation.lat + '&lon=' + trialLocation.lon ,
+        horizon: 'task1/ogallala.horizon.single.surface.html?lat=' + trialLocation.lat + '&lon=' + trialLocation.lon
+    };
 
     currentGraphTypeIndex = currentGraphTypeIndex % graphTypes.length;
     graphType = graphTypes[currentGraphTypeIndex];
