@@ -623,7 +623,7 @@ function init() {
 
     var material2016 = new THREE.MeshBasicMaterial( {
         side:THREE.DoubleSide,
-        color: colorRange[3]
+        color: colorRange[4]
     });
 
     var lineMat = new THREE.LineBasicMaterial({
