@@ -570,7 +570,7 @@ function init() {
     var vFOVRadians = 2 * Math.atan( windowHeight / ( 2 * 1500 ) ),
         //fov = vFOVRadians * 180 / Math.PI;
         fov = 40;
-    startPosition = new THREE.Vector3( 0, 0, 6000 );
+    startPosition = new THREE.Vector3( 0, 1000, 2500 );
     camera = new THREE.PerspectiveCamera( fov, windowWidth / windowHeight, 1, 30000 );
     camera.position.set( startPosition.x, startPosition.y, startPosition.z );
 
