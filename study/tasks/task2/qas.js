@@ -23,21 +23,30 @@ var questionsAndAnswers =  [
             answer: [
                 {
                     key: "2016",
-                    text:  "Year 2016 (green line)",
-                    color: colorRange[2]
+                    text:  "Year 2016",
+                    color: colorRange[2],
+                    help: '(green line)',
+                    helpColor: '#00FF00'
 
                 }
                 ,
                 {
                     key: "2014",
-                    text:  "Year 2014 (red line)",
-                    color: colorRange[1]
+                    text:  "Year 2014",
+                    color: colorRange[1],
+                    help: '(red line)',
+                    helpColor: '#FF0000'
+
+
 
                 },
                 {
                     key: "2010",
-                    text:  "Year 2010 (black line)",
-                    color: colorRange[0]
+                    text:  "Year 2010",
+                    color: colorRange[0],
+                    help: '(black line)',
+                    helpColor: '#000000'
+
 
                 }
             ]
