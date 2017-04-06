@@ -49,8 +49,8 @@ var light;
 
 var mouseX = 0, mouseY = 0;
 
-var windowWidth =  1200,
-    windowHeight = 800;
+var windowWidth =  1700,
+    windowHeight = 1200;
 
 var realData2010;
 var realData2012;
