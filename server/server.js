@@ -51,6 +51,14 @@ app.get('/', function (req, res) {
         questionKey: null,
         correct: false,
         duration: null,
+        y1: null,
+        v1: null,
+        y2: null,
+        v2: null,
+        y3: null,
+        v3: null,
+        y4: null,
+        v4: null,
         query: req.url
     };
 
@@ -91,6 +99,34 @@ app.get('/', function (req, res) {
 
     if (query.hasOwnProperty("correct")) {
         obj.correct = query["correct"];
+    }
+
+    if (query.hasOwnProperty("y1")) {
+        obj.y1 = query["y1"];
+    }
+    if (query.hasOwnProperty("v1")) {
+        obj.v1 = query["v1"];
+    }
+
+    if (query.hasOwnProperty("y2")) {
+        obj.y2 = query["y2"];
+    }
+    if (query.hasOwnProperty("v2")) {
+        obj.v2 = query["v2"];
+    }
+
+    if (query.hasOwnProperty("y3")) {
+        obj.y3 = query["y3"];
+    }
+    if (query.hasOwnProperty("v3")) {
+        obj.v3 = query["v3"];
+    }
+
+    if (query.hasOwnProperty("y4")) {
+        obj.y4 = query["y4"];
+    }
+    if (query.hasOwnProperty("v4")) {
+        obj.v4 = query["v4"];
     }
 
     if (trialStarted == false) {
