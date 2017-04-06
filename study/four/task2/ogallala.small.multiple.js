@@ -613,7 +613,7 @@ function init() {
     maxYear.v3 = trialLocation.sat;
 
     trialLocation = trialLocations[3];
-    var floorGeometry2016 = createGeometry(realData2016);
+    var floorGeometry2016 = createGeometry(realData2016, 0.33, 1200);
     var floor2016 = new THREE.Mesh(floorGeometry2016, wireframeMaterial);
     if (trialLocation.sat > maxYear.value) {
         maxYear.value = trialLocation.sat;
