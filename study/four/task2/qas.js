@@ -17,7 +17,7 @@ var colorRange = cTen.range();
 var questionsAndAnswers =  [
         {
             question: {
-                key: "t1q1",
+                key: "t2q1",
                 text: "What year has highest saturated thickness?"
             },
             answer: [
@@ -94,7 +94,7 @@ function fireLogging(graphType) {
     var endTime = (new Date()).getTime();
     var dur = endTime - startTime;
     var maxStr = convertMaxYeartoQueryString(win.maxYear);
-    var myUrl = httpURLBase + '?user=' + userId + '&graphType=' + graphType + '&task=Task1&questionKey=' + questionAnswer.question.key + '&correct=' + correct + '&duration=' + dur + "&selected=" + a + maxStr;
+    var myUrl = httpURLBase + '?user=' + userId + '&graphType=' + graphType + '&task=Task2&questionKey=' + questionAnswer.question.key + '&correct=' + correct + '&duration=' + dur + "&selected=" + a + maxStr;
     httpGetAsync(myUrl);
     console.log(questionAnswer);
     console.log(a);
