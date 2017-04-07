@@ -38,8 +38,14 @@ var convertToJsonArray = function () {
                 dataSummary[numYears] = {};
             }
 
-            if (!dataSummary[numYears].hasOwnProperty(task)) {
-                dataSummary[numYears][task] = {
+            if (!dataSummary[numYears].hasOwnProperty(graphType)) {
+                dataSummary[numYears][graphType] = {};
+            }
+
+            var tempTasks = dataSummary[numYears][graphType];
+
+            if (!tempTasks.hasOwnProperty(task)) {
+                tempTasks[task] = {
                     count: 0,
                     correct: 0,
                     duration: 0,
@@ -48,31 +54,32 @@ var convertToJsonArray = function () {
                 }
             }
 
-            dataSummary[numYears][task].count ++;
-            dataSummary[numYears][task].duration += duration;
+            tempTasks[task].count ++;
+            tempTasks[task].duration += duration;
 
             if (correct == true) {
-                dataSummary[numYears][task].correct ++;
+                tempTasks[task].correct ++;
             }
 
-            var total =  dataSummary[numYears][task].count;
-            var correct =  dataSummary[numYears][task].correct;
-            var totalTime = dataSummary[numYears][task].duration;
+            var total =  tempTasks[task].count;
+            var correct =  tempTasks[task].correct;
+            var totalTime = tempTasks[task].duration;
 
 
             if (total != 0) {
-                dataSummary[numYears][task].accuracyPercentage = (correct * 100) / total;
-                dataSummary[numYears][task].averageTime = totalTime / total;
+                tempTasks[task].accuracyPercentage = (correct * 100) / total;
+                tempTasks[task].averageTime = totalTime / total;
             }
 
         })
         .on('end',function() {
             var tasks;
             for(var numYr in dataSummary) {
-                tasks = dataSummary[numYr];
-                tasks['accuracyDifference'] = tasks['Task1'].accuracyPercentage -  tasks['Task2'].accuracyPercentage;
-                tasks['timeDifference'] = tasks['Task2'].averageTime -  tasks['Task1'].averageTime;
-
+                for(var gType in dataSummary[numYr]) {
+                    tasks = dataSummary[numYr][gType];
+                    tasks['accuracyDifference'] = tasks['Task1'].accuracyPercentage -  tasks['Task2'].accuracyPercentage;
+                    tasks['timeDifference'] = tasks['Task2'].averageTime -  tasks['Task1'].averageTime;
+                }
             }
 
             console.log(dataSummary);
@@ -80,6 +87,8 @@ var convertToJsonArray = function () {
             console.log("done");
         });
 };
+
+console.log({test: {test: {test: {est: 100}}}});
 
 convertToJsonArray();
 
