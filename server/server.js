@@ -10,7 +10,7 @@ var csvWriter = require('csv-write-stream');
 // for actual user study
 var trialStarted = true;
 var outputFile = 'trials.csv';
-var sendHeader = true;
+var sendHeader = false;
 
 
 app.post('/', function (req, res) {
@@ -46,6 +46,7 @@ app.get('/', function (req, res) {
 
     var obj = {
         logTimestamp: (new Date()).getTime(),
+        numYears: null,
         graphType: null,
         task: null,
         questionKey: null,
@@ -63,6 +64,14 @@ app.get('/', function (req, res) {
     };
 
     var query = req.query;
+
+    if (query.hasOwnProperty("numYears")) {
+        obj.numYears = query["numYears"];
+    }
+    else {
+        console.log("Missing 'numYears' query param");
+        return;
+    }
 
     if (query.hasOwnProperty("graphType")) {
         obj.graphType = query["graphType"];
