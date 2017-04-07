@@ -641,7 +641,8 @@ function init() {
     addDot('#FF0000', trialLocation.vertices);
     maxYear.value = trialLocation.sat;
     maxYear.year = 2010;
-
+    maxYear.y1 = 2010;
+    maxYear.v1 = trialLocation.sat;
 
 
     trialLocation = trialLocations[1];
@@ -651,6 +652,8 @@ function init() {
         maxYear.value = trialLocation.sat;
         maxYear.year = 2016;
     }
+    maxYear.y2 = 2016;
+    maxYear.v2 = trialLocation.sat;
 
     var group = new THREE.Object3D();
     for(var i = 0; i<meshes.length; i++) {
