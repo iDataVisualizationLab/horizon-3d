@@ -8,10 +8,10 @@ c3.generate({
     data: {
         x: 'x',
         columns: [
-            ['x', 2, 3, 5, 7],
-            ['Simple Surface Graph', 98, 90, 72, 53],
-            ['Small Multiples', 95, 93, 88, 85],
-            ['3D Horizon Graph', 90, 86, 83, 80]
+            ['x', 2, 3, 4],
+            ['Simple Surface Graph', 90, 78, 68],
+            ['Small Multiples', 88, 80, 75],
+            ['3D Horizon Graph', 65, 50, 42.5]
         ],
         type: 'bar'
     },
