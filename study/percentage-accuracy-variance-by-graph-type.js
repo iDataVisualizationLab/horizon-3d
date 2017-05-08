@@ -9,9 +9,9 @@ c3.generate({
         x: 'x',
         columns: [
             ['x', 2, 3, 4],
-            ['Simple Graph Surface', 10, 15, 18],
-            ['Small Multiples', 6, 10, 13],
-            ['3D Horizon Graph', 14, 20, 31]
+            ['Simple Graph Surface', 10, 15, 20],
+            ['Small Multiples', 5, 10, 10],
+            ['3D Horizon Graph', 10, 20, 35]
         ]
     },
     axis: {
